@@ -51,7 +51,7 @@ public class Main {
             data.put("Error_Message", "Oops guess we messed :(");
 
             ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
-                    .header("DeeZNuts", "suckEm")
+                    .header("Test", "Value")
                     .body(data);
 
             return CompletableFuture.completedFuture(resEnt);
@@ -60,7 +60,7 @@ public class Main {
         data.put("isCheckIn", isCheckIn);
 
         ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.CREATED)
-                .header("DeeZNuts", "suckEm")
+                .header("Test", "Value")
                 .body(data);
 
         return CompletableFuture.completedFuture(resEnt);
