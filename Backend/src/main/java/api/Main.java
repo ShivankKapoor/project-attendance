@@ -1,4 +1,4 @@
-package com.example;
+package api;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.EnableAsync;

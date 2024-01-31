@@ -1,4 +1,4 @@
-package com.example;
+package api;
 import record.Records;
 
 import java.sql.*;
@@ -19,7 +19,7 @@ public class dbConnection {
         try {
             conn =
                     DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/testschema?" +
-                            "user=root&password=Football1123!");
+                            "user=root&password=ENTERPASSWORDHERE!");
 //            jdbc:mysql://${MYSQL_HOST:127.0.0.1}:3306/testschema
 
             // Do something with the Connection
@@ -60,11 +60,11 @@ public class dbConnection {
         Statement stmt = null;
         ResultSet rs = null;
         int failedSucceded;
-
+//TODO Add a cloud DB
         try {
             conn =
                     DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/testschema?" +
-                            "user=root&password=Football1123!");
+                            "user=root&password=ENTERPASSWORDHERE!");
 
             stmt = conn.createStatement();
             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO `testschema`.`cs6969` (`stdID`, `date`) VALUES (?, ?)");
