@@ -3,8 +3,15 @@ import record.Records;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import io.github.cdimascio.dotenv.Dotenv;
+import io.github.cdimascio.dotenv.DotenvEntry;
+
+
 
 public class dbConnection {
+
+    Dotenv dotenv = Dotenv.configure().load();
+    String userId = dotenv.get("DB_UserId");
 
     public ResultSet DataBase(String[] args) {
         //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
