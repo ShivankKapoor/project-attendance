@@ -4,9 +4,6 @@ import record.Records;
 import java.sql.*;
 import java.time.LocalDateTime;
 import io.github.cdimascio.dotenv.Dotenv;
-import io.github.cdimascio.dotenv.DotenvEntry;
-
-
 
 public class dbConnection {
 
@@ -18,8 +15,6 @@ public class dbConnection {
     String JDBCConnectionString = String.format("jdbc:mysql://csproject.c54ogsos2j17.us-east-2.rds.amazonaws.com:3306/seniorProject?user=%s&password=%s", userId, password);
 
     public ResultSet DataBase(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
         System.out.printf("Hello and welcome!");
 
         Connection conn = null;
@@ -30,9 +25,6 @@ public class dbConnection {
         try {
             conn =
                     DriverManager.getConnection(JDBCConnectionString);
-//            jdbc:mysql://${MYSQL_HOST:127.0.0.1}:3306/seniorProject
-
-            // Do something with the Connection
 
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT * FROM seniorProject.person;");
@@ -44,10 +36,6 @@ public class dbConnection {
 
                 System.out.println("ID: " + ID + " First Name: " + firstName + " Last Name: " + lastName);
             }
-
-//            if (stmt.execute("SELECT * FROM seniorProject.person;")) {
-//                rs = stmt.getResultSet();
-//            }
 
 
             System.out.println("response: " + rs);
@@ -71,23 +59,20 @@ public class dbConnection {
 
         Connection conn = null;
 
-        Statement stmt = null;
-        ResultSet rs = null;
         int failedSucceded;
         try {
             conn = DriverManager.getConnection(JDBCConnectionString);
 
-            stmt = conn.createStatement();
-            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO `seniorProject`.`checkIn` (`courseId`, `utdId`, `netId`, `time`) VALUES ('0', '12345678', 'hvrtest', '0000-00-00')");
-//`seniorProject`.`checkIn` (`courseId`, `utdId`, `netId`) VALUES ('0', '1234', 'hvr190000');
+            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO `seniorProject`.`checkIn` (`courseId`, `utdId`, `netId`, `time`) VALUES (?, ?, ?, ?)");
             LocalDateTime date = LocalDateTime.now();
-//            pstmt.setString(1, checkIn.stdId());
-//            pstmt.setString(2, String.valueOf(date));
+            pstmt.setString(1, checkIn.courseId());
+            pstmt.setInt(2, checkIn.utdId());
+            pstmt.setString(3, checkIn.netId());
+            pstmt.setString(4, String.valueOf(date));
 
             failedSucceded = pstmt.executeUpdate();
 
         } catch (SQLException ex) {
-            // handle any errors
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
