@@ -1,4 +1,4 @@
-package com.example;
+package api;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -16,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 @RestController
 @SpringBootApplication
 @EnableAsync

@@ -1,14 +1,20 @@
-package com.example;
+package api;
 import record.Records;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class dbConnection {
 
+    Dotenv dotenv = Dotenv.configure().load();
+    String userId = dotenv.get("DB_UserId");
+    String password = dotenv.get("DB_Password");
+
+
+    String JDBCConnectionString = String.format("jdbc:mysql://csproject.c54ogsos2j17.us-east-2.rds.amazonaws.com:3306/seniorProject?user=%s&password=%s", userId, password);
+
     public ResultSet DataBase(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
         System.out.printf("Hello and welcome!");
 
         Connection conn = null;
@@ -18,14 +24,10 @@ public class dbConnection {
 
         try {
             conn =
-                    DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/testschema?" +
-                            "user=root&password=Football1123!");
-//            jdbc:mysql://${MYSQL_HOST:127.0.0.1}:3306/testschema
-
-            // Do something with the Connection
+                    DriverManager.getConnection(JDBCConnectionString);
 
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM testschema.person;");
+            rs = stmt.executeQuery("SELECT * FROM seniorProject.person;");
 
             while(rs.next()) {
                 Integer ID = rs.getInt("ID");
@@ -34,10 +36,6 @@ public class dbConnection {
 
                 System.out.println("ID: " + ID + " First Name: " + firstName + " Last Name: " + lastName);
             }
-
-//            if (stmt.execute("SELECT * FROM testschema.person;")) {
-//                rs = stmt.getResultSet();
-//            }
 
 
             System.out.println("response: " + rs);
@@ -55,28 +53,26 @@ public class dbConnection {
 
     public int addCheckInEntrty(Records.Checkin checkIn) {
 
+        System.out.println("userID: " + userId + " password: " + password);
+        System.out.println("Connection string: " + JDBCConnectionString);
+
+
         Connection conn = null;
 
-        Statement stmt = null;
-        ResultSet rs = null;
         int failedSucceded;
-
         try {
-            conn =
-                    DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/testschema?" +
-                            "user=root&password=Football1123!");
+            conn = DriverManager.getConnection(JDBCConnectionString);
 
-            stmt = conn.createStatement();
-            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO `testschema`.`cs6969` (`stdID`, `date`) VALUES (?, ?)");
-
+            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO `seniorProject`.`checkIn` (`courseId`, `utdId`, `netId`, `time`) VALUES (?, ?, ?, ?)");
             LocalDateTime date = LocalDateTime.now();
-            pstmt.setString(1, checkIn.stdId());
-            pstmt.setString(2, String.valueOf(date));
+            pstmt.setString(1, checkIn.courseId());
+            pstmt.setInt(2, checkIn.utdId());
+            pstmt.setString(3, checkIn.netId());
+            pstmt.setString(4, String.valueOf(date));
 
             failedSucceded = pstmt.executeUpdate();
 
         } catch (SQLException ex) {
-            // handle any errors
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
