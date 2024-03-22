@@ -51,4 +51,18 @@ body {
   label {
     font-size: 14px;
   }
-  
+  .register-button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(to right, #e87500, #e87500); /* Gradient from orange to orange */
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.register-button:hover {
+    background: linear-gradient(to right, #e87500, #e87500); /* Gradient from orange to orange (same on hover) */
+}
