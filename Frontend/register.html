@@ -14,7 +14,12 @@
     <input type="text" id="username" placeholder="Username" required>
     <input type="password" id="password" placeholder="Password" required>
     <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+    <div class="checkbox-container">
+      <input style="width: 5%" type="checkbox" id="showPasswordCheckbox" onclick="togglePasswordVisibility()">
+      <label for="showPasswordCheckbox">Show Password</label>
+    </div>
     <input type="submit" value="Register">
+    <button onclick="redirectToLogin()" class="register-button">Already have an account?</button>
   </form>
 
   <script src="register.js"></script>

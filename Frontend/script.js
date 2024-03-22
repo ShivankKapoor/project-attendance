@@ -7,6 +7,10 @@ function togglePasswordVisibility() {
     }
   }
   
+  function redirectToRegister() {
+    window.location.href = "register.html";
+  }
+
   document.getElementById("loginForm").addEventListener("submit", function(event) {
     event.preventDefault(); // Prevent form submission
   

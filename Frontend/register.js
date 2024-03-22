@@ -1,3 +1,21 @@
+function togglePasswordVisibility() {
+  var passwordInput = document.getElementById("password");
+  var retypedPasswordInput = document.getElementById("confirmPassword")
+
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    retypedPasswordInput.type="text";
+  } else {
+    passwordInput.type = "password";
+    retypedPasswordInput.type="password"
+  }
+}
+
+function redirectToLogin() {
+  window.location.href = "index.html";
+}
+
+
 document.getElementById("registerForm").addEventListener("submit", function(event) {
     event.preventDefault(); // Prevent form submission
   
