@@ -58,10 +58,22 @@ public class dbConnection {
 
 
         Connection conn = null;
-
+        int count=-1;
         int failedSucceded;
         try {
             conn = DriverManager.getConnection(JDBCConnectionString);
+
+
+            System.out.println("this is the courseId="+ checkIn.courseId());
+            System.out.println("this is the utdId="+ checkIn.utdId());
+
+            count= isUserInClass(checkIn.courseId(), checkIn.utdId());
+            //System.out.println("this is in the main part:"+ count);
+            if(count<1){
+                System.out.println("you are not enrolled for the class, you cannot sign in");
+                failedSucceded=0;
+                return failedSucceded;
+            }
 
             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO `seniorProject`.`checkIn` (`courseId`, `utdId`, `netId`, `time`) VALUES (?, ?, ?, ?)");
             LocalDateTime date = LocalDateTime.now();
@@ -80,5 +92,36 @@ public class dbConnection {
         }
 
         return failedSucceded;
+    }
+
+    public int isUserInClass(String courseId, int utdId ){
+
+
+        System.out.println("userID: " + userId + " password: " + password);
+        System.out.println("Connection string: " + JDBCConnectionString);
+        Connection conn = null;
+        int count=-1;
+
+        String stmt= "Select count(`utdId`) From `seniorProject`.`studentClass` where `courseId`="+courseId +" and `utdId`=" +utdId+";";
+        int succeeded;
+        try{
+            conn = DriverManager.getConnection(JDBCConnectionString);
+            Statement stmt3 = conn.createStatement();
+            ResultSet rs= stmt3.executeQuery(stmt);
+            if(rs.next()){
+                count = rs.getInt(1);
+            }
+            //count=rs.getInt(1);
+            System.out.println("total count is studentClass:"+ count);
+
+        }
+        catch(SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+
+        }
+
+        return count;
     }
 }
