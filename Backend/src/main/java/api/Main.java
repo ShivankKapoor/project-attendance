@@ -12,6 +12,7 @@ import java.util.concurrent.CompletableFuture;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +38,7 @@ public class Main {
         return "Hruday";
     }
 
+    @CrossOrigin
     @RequestMapping("/checkIn")
     CompletableFuture<ResponseEntity<Map>> checkIn(@RequestBody Records.Checkin checkIn) throws SQLException {
         int isCheckIn;
