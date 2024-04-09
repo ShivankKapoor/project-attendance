@@ -25,7 +25,6 @@ public class Main {
     String home() {
         return "Test to see if the server is up and running";
     }
-
     @CrossOrigin  // to enable cors
     @RequestMapping("/checkIn")  //this is the url that for our api
     // This is an async response for a checkIn
@@ -33,6 +32,7 @@ public class Main {
         boolean isCheckIn;
         dbConnection connection = new dbConnection();
         isCheckIn = connection.addCheckInEntrty(checkIn);
+
         Map<String, Object> data = new HashMap<>();
 
         // if check in failed give an error message
@@ -48,6 +48,7 @@ public class Main {
         }
 
         data.put("isCheckIn", isCheckIn);
+
 
         ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.CREATED)
                 .header("Test", "Value")
