@@ -77,7 +77,37 @@ public class Main {
             return CompletableFuture.completedFuture(resEnt);
         }
 
-        data.put("isCheckIn", isRegister);
+        data.put("register", isRegister);
+
+        ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.CREATED)
+                .header("Test", "Value")
+                .body(data);
+
+        return CompletableFuture.completedFuture(resEnt);
+    }
+
+    @CrossOrigin  // to enable cors
+    @RequestMapping("/login")  //this is the url that for our api
+        // This is an async response for a checkIn
+    CompletableFuture<ResponseEntity<Map>> login(@RequestBody Records.login login) throws SQLException {
+        boolean isLogin;
+        register Register = new register();
+        isLogin = Register.login(login);
+        Map<String, Object> data = new HashMap<>();
+
+        // if check in failed give an error message
+        if (!isLogin) {
+            data.put("Error_Message", "Oops guess we messed :(");
+
+            // header for the error message
+            ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                    .header("Test", "Value")
+                    .body(data);
+
+            return CompletableFuture.completedFuture(resEnt);
+        }
+
+        data.put("login", isLogin);
 
         ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.CREATED)
                 .header("Test", "Value")

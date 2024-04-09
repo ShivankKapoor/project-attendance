@@ -7,6 +7,8 @@ public record Records (List<Records> recordsList) {
 
     public record register(String fullName, String netId, String utdId, String password) { }
 
+    public record login(String utdId, String password) { }
+
 }
 
 

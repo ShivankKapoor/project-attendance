@@ -50,4 +50,31 @@ public class register {
         return true;
     }
 
+    public boolean login(Records.login login) {
+
+        Connection conn = null;
+        int count=-1;
+        try {
+            conn = DriverManager.getConnection(JDBCConnectionString);
+            // SELECT count('idregister') FROM seniorProject.register
+            //where utdId = 'test' and password = 'test';
+            PreparedStatement checkIfValidUserIdandPassword = conn.prepareStatement("SELECT count('idregister') FROM seniorProject.register where utdId = (?) and password = (?);");
+            checkIfValidUserIdandPassword.setString(1, login.utdId());
+            checkIfValidUserIdandPassword.setString(2, login.password());
+
+            if (checkIfValidUserIdandPassword.executeUpdate() == 0) {
+                System.out.println("Incorrect password or userID");
+                return false;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+            return false;
+        }
+
+        return true;
+    }
+
 }
