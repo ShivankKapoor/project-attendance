@@ -37,9 +37,7 @@ public class dbConnection {
                 System.out.println("ID: " + ID + " First Name: " + firstName + " Last Name: " + lastName);
             }
 
-
             System.out.println("response: " + rs);
-
 
         } catch (SQLException ex) {
             // handle any errors
@@ -51,28 +49,17 @@ public class dbConnection {
         return rs;
     }
 
-    public int addCheckInEntrty(Records.Checkin checkIn) {
-
-        System.out.println("userID: " + userId + " password: " + "***********");
-        System.out.println("Connection string: " + JDBCConnectionString);
-
+    public boolean addCheckInEntrty(Records.Checkin checkIn) {
 
         Connection conn = null;
         int count=-1;
-        int failedSucceded;
         try {
             conn = DriverManager.getConnection(JDBCConnectionString);
 
-
-            System.out.println("this is the courseId="+ checkIn.courseId());
-            System.out.println("this is the utdId="+ checkIn.utdId());
-
             count= isUserInClass(checkIn.courseId(), checkIn.utdId());
-            //System.out.println("this is in the main part:"+ count);
             if(count<1){
                 System.out.println("you are not enrolled for the class, you cannot sign in");
-                failedSucceded=0;
-                return failedSucceded;
+                return false;
             }
 
             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO `seniorProject`.`checkIn` (`courseId`, `utdId`, `netId`, `time`) VALUES (?, ?, ?, ?)");
@@ -82,16 +69,16 @@ public class dbConnection {
             pstmt.setString(3, checkIn.netId());
             pstmt.setString(4, String.valueOf(date));
 
-            failedSucceded = pstmt.executeUpdate();
+            pstmt.executeUpdate();
 
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            failedSucceded = 0;
+            return false;
         }
 
-        return failedSucceded;
+        return true;
     }
 
     public int isUserInClass(String courseId, int utdId ){
