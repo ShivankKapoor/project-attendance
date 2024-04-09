@@ -3,7 +3,6 @@ package api;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.EnableAsync;
 import record.Records;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +11,7 @@ import java.util.concurrent.CompletableFuture;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,34 +23,23 @@ public class Main {
 
     @RequestMapping("/")
     String home() {
-        return "Hello World!";
+        return "Test to see if the server is up and running";
     }
-
-    /*@RequestMapping("/df")
-    String df() throws SQLException {
-
-        ResultSet rs = null;
-        dbConnection connection = new dbConnection();
-        rs = connection.DataBase(new String[]{"This does nothing"});
-
-
-        return "Hruday";
-    }*/
-
-    //mapping to checkIn
-    @RequestMapping("/checkIn")
+    @CrossOrigin  // to enable cors
+    @RequestMapping("/checkIn")  //this is the url that for our api
+    // This is an async response for a checkIn
     CompletableFuture<ResponseEntity<Map>> checkIn(@RequestBody Records.Checkin checkIn) throws SQLException {
-        int isCheckIn;
-        //creating the connection for the DB
+        boolean isCheckIn;
         dbConnection connection = new dbConnection();
         isCheckIn = connection.addCheckInEntrty(checkIn);
 
         Map<String, Object> data = new HashMap<>();
 
-        //if the isCheckin value is not 1, that means the student was unable to checkin
-        if (isCheckIn != 1) {
-            data.put("Error_Message", "Unable to check in");
+        // if check in failed give an error message
+        if (!isCheckIn) {
+            data.put("Error_Message", "Oops guess we messed :(");
 
+            // header for the error message
             ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
                     .header("Test", "Value")
                     .body(data);
@@ -60,6 +49,66 @@ public class Main {
 
         data.put("isCheckIn", isCheckIn);
 
+
+        ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.CREATED)
+                .header("Test", "Value")
+                .body(data);
+
+        return CompletableFuture.completedFuture(resEnt);
+    }
+
+    @CrossOrigin  // to enable cors
+    @RequestMapping("/register")  //this is the url that for our api
+        // This is an async response for a checkIn
+    CompletableFuture<ResponseEntity<Map>> register(@RequestBody Records.register register) throws SQLException {
+        boolean isRegister;
+        register Register = new register();
+        isRegister = Register.addNewUser(register);
+        Map<String, Object> data = new HashMap<>();
+
+        // if check in failed give an error message
+        if (!isRegister) {
+            data.put("Error_Message", "Oops guess we messed :(");
+
+            // header for the error message
+            ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                    .header("Test", "Value")
+                    .body(data);
+
+            return CompletableFuture.completedFuture(resEnt);
+        }
+
+        data.put("register", isRegister);
+
+        ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.CREATED)
+                .header("Test", "Value")
+                .body(data);
+
+        return CompletableFuture.completedFuture(resEnt);
+    }
+
+    @CrossOrigin  // to enable cors
+    @RequestMapping("/login")  //this is the url that for our api
+        // This is an async response for a checkIn
+    CompletableFuture<ResponseEntity<Map>> login(@RequestBody Records.login login) throws SQLException {
+        boolean isLogin;
+        register Register = new register();
+        isLogin = Register.login(login);
+        Map<String, Object> data = new HashMap<>();
+
+        // if check in failed give an error message
+        if (!isLogin) {
+            data.put("Error_Message", "Incorrect userID or Password ");
+
+            // header for the error message
+            ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                    .header("Test", "Value")
+                    .body(data);
+
+            return CompletableFuture.completedFuture(resEnt);
+        }
+
+        data.put("login", isLogin);
 
         ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.CREATED)
                 .header("Test", "Value")

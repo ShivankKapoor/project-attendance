@@ -21,9 +21,9 @@ public class dbConnection {
     public ResultSet DataBase(String[] args) {
         System.out.printf("Hello and welcome!");
 
-        Connection conn = null;
+        Connection conn;
 
-        Statement stmt = null;
+        Statement stmt;
         ResultSet rs = null;
 
         try {
@@ -44,9 +44,7 @@ public class dbConnection {
                 System.out.println("ID: " + ID + " First Name: " + firstName + " Last Name: " + lastName);
             }
 
-
             System.out.println("response: " + rs);
-
 
         } catch (SQLException ex) {
             // handle any errors
@@ -59,29 +57,21 @@ public class dbConnection {
     }
 
     // function forChecking in student entry
-    public int addCheckInEntrty(Records.Checkin checkIn) {
-
-        System.out.println("Connection string: " + JDBCConnectionString);
+    public boolean addCheckInEntrty(Records.Checkin checkIn) {
 
         Connection conn = null;
         boolean isInClass=false;
-        int failedSucceded;
         try {
             conn = DriverManager.getConnection(JDBCConnectionString);
-
-
-            System.out.println("this is the courseId="+ checkIn.courseId());
-            System.out.println("this is the utdId="+ checkIn.utdId());
 
             //count holds the return value if the function isUserInClass which returns whether the student exists in the class or not
             isInClass= isUserInClass(checkIn.courseId(), checkIn.utdId(), checkIn.netId());
 
             //if return value is false, then the student is not in class and the student checkin is not recorded
-            if(isInClass==false){
+            if(!isInClass){
                 System.out.println("you are not enrolled for the class, you cannot sign in");
-                failedSucceded=0;
                 //returning the value failedSucceeded=0 so that we know that the checkin failed
-                return failedSucceded;
+                return false;
             }
 
             //preparing statement to execute to enter the values of the student for the course and date
@@ -92,26 +82,22 @@ public class dbConnection {
             pstmt.setString(3, checkIn.netId());
             pstmt.setString(4, String.valueOf(date));
 
-            failedSucceded = pstmt.executeUpdate();
+            pstmt.executeUpdate();
 
         } catch (SQLException ex) {
             //to catch any errors
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            failedSucceded = 0;
+            return false;
         }
 
-        //to see whether the entry succeeded or failed
-        return failedSucceded;
+        return true;
     }
 
     //function to check if the user is in the class
     public boolean isUserInClass(String courseId, int utdId, String netId ){
 
-
-        //System.out.println("userID: " + userId + " password: " + password);
-        System.out.println("Connection string: " + JDBCConnectionString);
         Connection conn = null;
 
         //count to keep track of the number of records with the student UTDID in the class
@@ -126,28 +112,26 @@ public class dbConnection {
             conn = DriverManager.getConnection(JDBCConnectionString);
 
             //checking if the UTDID exists in the class
-            PreparedStatement stmt2= conn.prepareStatement( "Select count(`utdId`) From `seniorProject`.`studentClass` where `courseId`=? and `utdId`=?;");
-            stmt2.setString(1, courseId);
-            stmt2.setInt(2, utdId);
+            PreparedStatement getCountOfUtdIdInClass= conn.prepareStatement( "Select count(`utdId`) From `seniorProject`.`studentClass` where `courseId`=? and `utdId`=?;");
+            getCountOfUtdIdInClass.setString(1, courseId);
+            getCountOfUtdIdInClass.setInt(2, utdId);
             //saving the return value for count of students in class with the same UTDID in rs
-            ResultSet rs= stmt2.executeQuery();
+            ResultSet isUtdIdInCourse= getCountOfUtdIdInClass.executeQuery();
 
             //comparing the netID from the entry and checking to see if the netID in the database and the quiz match with teh UTDID
-            PreparedStatement stmt3= conn.prepareStatement("SELECT `netId` FROM `seniorProject`.`users` where utdId=?;");
-            stmt3.setInt(1, utdId);
+            PreparedStatement getNetIdAndUtdId= conn.prepareStatement("SELECT `netId` FROM `seniorProject`.`users` where utdId=?;");
+            getNetIdAndUtdId.setInt(1, utdId);
             //saving the value of the netID for the UTDID From the database in rs2
-            ResultSet rs2= stmt3.executeQuery();
+            ResultSet isNetIdandUtdIdSameUser= getNetIdAndUtdId.executeQuery();
 
             //getting value to see if student exists in class. if count=1, student is in class, if count<1 then the student is not
-            if(rs.next()){
-                count = rs.getInt(1);
+            if(isUtdIdInCourse.next()){
+                count = isUtdIdInCourse.getInt(1);
             }
             //getting the value of the netID from the database
-            if(rs2.next()){
-                netIdSQL = rs2.getString(1);
+            if(isNetIdandUtdIdSameUser.next()){
+                netIdSQL = isNetIdandUtdIdSameUser.getString(1);
             }
-
-            System.out.println("count="+ count+" netId="+netId + " SQL netID="+ netIdSQL);
 
             //comparing the values of netID and count to make sure all details match, if they dont, then student does not exist in class
             if(count>0 && netId.equalsIgnoreCase(netIdSQL)){
