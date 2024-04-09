@@ -26,7 +26,7 @@ public class Main {
         return "Hello World!";
     }
 
-    @RequestMapping("/df")
+    /*@RequestMapping("/df")
     String df() throws SQLException {
 
         ResultSet rs = null;
@@ -35,17 +35,21 @@ public class Main {
 
 
         return "Hruday";
-    }
+    }*/
 
+    //mapping to checkIn
     @RequestMapping("/checkIn")
     CompletableFuture<ResponseEntity<Map>> checkIn(@RequestBody Records.Checkin checkIn) throws SQLException {
         int isCheckIn;
+        //creating the connection for the DB
         dbConnection connection = new dbConnection();
         isCheckIn = connection.addCheckInEntrty(checkIn);
+
         Map<String, Object> data = new HashMap<>();
 
+        //if the isCheckin value is not 1, that means the student was unable to checkin
         if (isCheckIn != 1) {
-            data.put("Error_Message", "Oops guess we messed :(");
+            data.put("Error_Message", "Unable to check in");
 
             ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
                     .header("Test", "Value")
@@ -55,6 +59,7 @@ public class Main {
         }
 
         data.put("isCheckIn", isCheckIn);
+
 
         ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.CREATED)
                 .header("Test", "Value")

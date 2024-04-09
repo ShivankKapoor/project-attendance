@@ -8,12 +8,16 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class dbConnection {
 
     Dotenv dotenv = Dotenv.configure().load();
+
+    //database user ID and password strings
     String userId = dotenv.get("DB_UserId");
     String password = dotenv.get("DB_Password");
 
 
+    //sql connection
     String JDBCConnectionString = String.format("jdbc:mysql://csproject.c54ogsos2j17.us-east-2.rds.amazonaws.com:3306/seniorProject?user=%s&password=%s", userId, password);
 
+    //function to check in to the database
     public ResultSet DataBase(String[] args) {
         System.out.printf("Hello and welcome!");
 
@@ -23,12 +27,15 @@ public class dbConnection {
         ResultSet rs = null;
 
         try {
-            conn =
-                    DriverManager.getConnection(JDBCConnectionString);
+            //connecting to database
+            conn = DriverManager.getConnection(JDBCConnectionString);
 
+            //creating statement to execute
             stmt = conn.createStatement();
+            //executing the statement and getting result in rs (response)
             rs = stmt.executeQuery("SELECT * FROM seniorProject.person;");
 
+            //getting ID, First name, and last name
             while(rs.next()) {
                 Integer ID = rs.getInt("ID");
                 String firstName = rs.getString("FIRST_NAME");
@@ -51,14 +58,13 @@ public class dbConnection {
         return rs;
     }
 
+    // function forChecking in student entry
     public int addCheckInEntrty(Records.Checkin checkIn) {
 
-        System.out.println("userID: " + userId + " password: " + password);
         System.out.println("Connection string: " + JDBCConnectionString);
 
-
         Connection conn = null;
-        int count=-1;
+        boolean isInClass=false;
         int failedSucceded;
         try {
             conn = DriverManager.getConnection(JDBCConnectionString);
@@ -67,14 +73,18 @@ public class dbConnection {
             System.out.println("this is the courseId="+ checkIn.courseId());
             System.out.println("this is the utdId="+ checkIn.utdId());
 
-            count= isUserInClass(checkIn.courseId(), checkIn.utdId());
-            //System.out.println("this is in the main part:"+ count);
-            if(count<1){
+            //count holds the return value if the function isUserInClass which returns whether the student exists in the class or not
+            isInClass= isUserInClass(checkIn.courseId(), checkIn.utdId(), checkIn.netId());
+
+            //if return value is false, then the student is not in class and the student checkin is not recorded
+            if(isInClass==false){
                 System.out.println("you are not enrolled for the class, you cannot sign in");
                 failedSucceded=0;
+                //returning the value failedSucceeded=0 so that we know that the checkin failed
                 return failedSucceded;
             }
 
+            //preparing statement to execute to enter the values of the student for the course and date
             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO `seniorProject`.`checkIn` (`courseId`, `utdId`, `netId`, `time`) VALUES (?, ?, ?, ?)");
             LocalDateTime date = LocalDateTime.now();
             pstmt.setString(1, checkIn.courseId());
@@ -85,43 +95,77 @@ public class dbConnection {
             failedSucceded = pstmt.executeUpdate();
 
         } catch (SQLException ex) {
+            //to catch any errors
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
             failedSucceded = 0;
         }
 
+        //to see whether the entry succeeded or failed
         return failedSucceded;
     }
 
-    public int isUserInClass(String courseId, int utdId ){
+    //function to check if the user is in the class
+    public boolean isUserInClass(String courseId, int utdId, String netId ){
 
 
-        System.out.println("userID: " + userId + " password: " + password);
+        //System.out.println("userID: " + userId + " password: " + password);
         System.out.println("Connection string: " + JDBCConnectionString);
         Connection conn = null;
-        int count=-1;
 
-        String stmt= "Select count(`utdId`) From `seniorProject`.`studentClass` where `courseId`="+courseId +" and `utdId`=" +utdId+";";
-        int succeeded;
+        //count to keep track of the number of records with the student UTDID in the class
+        int count=-1;
+        //string to get the student's net ID from the database. This will be later compared with the net ID of the student that enetred the details
+        String netIdSQL="";
+        //Boolean to keep track of the existence of the student in the class
+        boolean isInClass=false;
+
+
         try{
             conn = DriverManager.getConnection(JDBCConnectionString);
-            Statement stmt3 = conn.createStatement();
-            ResultSet rs= stmt3.executeQuery(stmt);
+
+            //checking if the UTDID exists in the class
+            PreparedStatement stmt2= conn.prepareStatement( "Select count(`utdId`) From `seniorProject`.`studentClass` where `courseId`=? and `utdId`=?;");
+            stmt2.setString(1, courseId);
+            stmt2.setInt(2, utdId);
+            //saving the return value for count of students in class with the same UTDID in rs
+            ResultSet rs= stmt2.executeQuery();
+
+            //comparing the netID from the entry and checking to see if the netID in the database and the quiz match with teh UTDID
+            PreparedStatement stmt3= conn.prepareStatement("SELECT `netId` FROM `seniorProject`.`users` where utdId=?;");
+            stmt3.setInt(1, utdId);
+            //saving the value of the netID for the UTDID From the database in rs2
+            ResultSet rs2= stmt3.executeQuery();
+
+            //getting value to see if student exists in class. if count=1, student is in class, if count<1 then the student is not
             if(rs.next()){
                 count = rs.getInt(1);
             }
-            //count=rs.getInt(1);
-            System.out.println("total count is studentClass:"+ count);
+            //getting the value of the netID from the database
+            if(rs2.next()){
+                netIdSQL = rs2.getString(1);
+            }
+
+            System.out.println("count="+ count+" netId="+netId + " SQL netID="+ netIdSQL);
+
+            //comparing the values of netID and count to make sure all details match, if they dont, then student does not exist in class
+            if(count>0 && netId.equalsIgnoreCase(netIdSQL)){
+                isInClass=true;
+            }
 
         }
         catch(SQLException ex) {
+            //catch for any errors
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
 
         }
 
-        return count;
+        //returns True if student is in the class, or false if the student is not
+        return isInClass;
     }
 }
+
+//SELECT count(*) as attendance FROM seniorProject.checkIn where utdId=12332 and courseId=0;
