@@ -56,13 +56,17 @@ public class register {
         int count=-1;
         try {
             conn = DriverManager.getConnection(JDBCConnectionString);
-            // SELECT count('idregister') FROM seniorProject.register
-            //where utdId = 'test' and password = 'test';
-            PreparedStatement checkIfValidUserIdandPassword = conn.prepareStatement("SELECT count('idregister') FROM seniorProject.register where utdId = (?) and password = (?);");
+
+            PreparedStatement checkIfValidUserIdandPassword = conn.prepareStatement("SELECT count('idregister') as total FROM seniorProject.register where utdId = (?) and password = (?);");
             checkIfValidUserIdandPassword.setString(1, login.utdId());
             checkIfValidUserIdandPassword.setString(2, login.password());
 
-            if (checkIfValidUserIdandPassword.executeUpdate() == 0) {
+            ResultSet loginValue = checkIfValidUserIdandPassword.executeQuery();
+
+            loginValue.next();
+            int isValid = Integer.parseInt(loginValue.getString("total"));
+
+            if (isValid != 1) {
                 System.out.println("Incorrect password or userID");
                 return false;
             }

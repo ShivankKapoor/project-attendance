@@ -83,9 +83,6 @@ public class dbConnection {
 
     public int isUserInClass(String courseId, int utdId ){
 
-
-        System.out.println("userID: " + userId + " password: " + "********");
-        System.out.println("Connection string: " + JDBCConnectionString);
         Connection conn = null;
         int count=-1;
 

@@ -97,7 +97,7 @@ public class Main {
 
         // if check in failed give an error message
         if (!isLogin) {
-            data.put("Error_Message", "Oops guess we messed :(");
+            data.put("Error_Message", "Incorrect userID or Password ");
 
             // header for the error message
             ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
