@@ -53,7 +53,7 @@ public class dbConnection {
 
     public int addCheckInEntrty(Records.Checkin checkIn) {
 
-        System.out.println("userID: " + userId + " password: " + password);
+        System.out.println("userID: " + userId + " password: " + "***********");
         System.out.println("Connection string: " + JDBCConnectionString);
 
 
