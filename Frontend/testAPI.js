@@ -1,9 +1,9 @@
 function Submit() {
   const apiUrl = "http://localhost:8080/checkIn";
   const data = {
-    "courseId": "0",
-    "utdId": "12345678",
-    "netId": "sureeal1900048"
+    "courseId": document.getElementById("courseID").value,// "0"
+    "utdId": document.getElementById("utdID").value, // "12345678"
+    "netId": document.getElementById("netID").value //"sureeal1900048"
   };
 
   const requestOptions = {
@@ -23,6 +23,7 @@ function Submit() {
     })
     .then((data) => {
       outputElement.textContent = JSON.stringify(data, null, 2);
+      console.log("Check In Good")
     })
     .catch((error) => {
       console.error("Error:", error);
