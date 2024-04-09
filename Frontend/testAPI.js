@@ -1,3 +1,8 @@
+
+function redirectToHome() {
+    window.location.href = "home.html";
+}
+
 function Submit() {
   const apiUrl = "http://localhost:8080/checkIn";
   const data = {
@@ -28,4 +33,5 @@ function Submit() {
     .catch((error) => {
       console.error("Error:", error);
     });
+    redirectToHome()
 }
