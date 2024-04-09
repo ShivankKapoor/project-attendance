@@ -58,7 +58,7 @@ public class Main {
 
         data.put("isCheckIn", isCheckIn);
 
-        ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.CREATED)
+        ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.ACCEPTED)
                 .header("Test", "Value")
                 .body(data);
 
