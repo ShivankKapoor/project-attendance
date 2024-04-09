@@ -56,6 +56,36 @@ public class Main {
         return CompletableFuture.completedFuture(resEnt);
     }
 
+    @CrossOrigin  // to enable cors
+    @RequestMapping("/register")  //this is the url that for our api
+        // This is an async response for a checkIn
+    CompletableFuture<ResponseEntity<Map>> register(@RequestBody Records.register register) throws SQLException {
+        boolean isRegister;
+        register Register = new register();
+        isRegister = Register.addNewUser(register);
+        Map<String, Object> data = new HashMap<>();
+
+        // if check in failed give an error message
+        if (!isRegister) {
+            data.put("Error_Message", "Oops guess we messed :(");
+
+            // header for the error message
+            ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                    .header("Test", "Value")
+                    .body(data);
+
+            return CompletableFuture.completedFuture(resEnt);
+        }
+
+        data.put("isCheckIn", isRegister);
+
+        ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.CREATED)
+                .header("Test", "Value")
+                .body(data);
+
+        return CompletableFuture.completedFuture(resEnt);
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
     }

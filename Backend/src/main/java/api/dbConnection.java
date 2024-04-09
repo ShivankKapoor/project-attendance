@@ -17,9 +17,9 @@ public class dbConnection {
     public ResultSet DataBase(String[] args) {
         System.out.printf("Hello and welcome!");
 
-        Connection conn = null;
+        Connection conn;
 
-        Statement stmt = null;
+        Statement stmt;
         ResultSet rs = null;
 
         try {
