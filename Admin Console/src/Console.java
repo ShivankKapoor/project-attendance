@@ -33,8 +33,8 @@ public class Console extends JFrame {
         excuseAbsenceButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Action for "Excuse Absence" button
-                JOptionPane.showMessageDialog(Console.this, "Excuse Absence button clicked", "Button Clicked", JOptionPane.INFORMATION_MESSAGE);
+              excuser x = new excuser();
+              dispose();
             }
         });
         constraints.gridx = 1;
@@ -45,8 +45,8 @@ public class Console extends JFrame {
         seeWarningsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Action for "See Warnings" button
-                JOptionPane.showMessageDialog(Console.this, "See Warnings button clicked", "Button Clicked", JOptionPane.INFORMATION_MESSAGE);
+                warnings x = new warnings();
+                dispose();
             }
         });
         constraints.gridx = 2;
