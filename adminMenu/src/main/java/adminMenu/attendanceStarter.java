@@ -1,5 +1,8 @@
 package adminMenu;
 
+import adminMenu.dbConnection.password;
+import adminMenu.dbConnection.password;
+import record.Records;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -62,8 +65,11 @@ public class attendanceStarter extends JFrame {
                 String courseID = courseIDField.getText();
                 String password = new String(passwordField.getPassword());
                 Integer minutes = (Integer) minutesDropDown.getSelectedItem();
-
-                
+                password dailyPassword = new password();
+                password dailyPass = new password();
+                Records.professorCheckin professorCheckin = new Records.professorCheckin(courseID, password, minutes);
+                dailyPass.addDailyPassword(professorCheckin);
+                System.out.println(password);
                 JOptionPane.showMessageDialog(attendanceStarter.this, "Course ID: " + courseID + "\nPassword: " + password + "\nMinutes: " + minutes, "Submission Details", JOptionPane.INFORMATION_MESSAGE);
             }
         });
