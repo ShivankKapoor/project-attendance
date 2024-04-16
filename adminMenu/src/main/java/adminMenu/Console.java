@@ -55,6 +55,18 @@ public class Console extends JFrame {
         constraints.gridy = 0;
         panel.add(seeWarningsButton, constraints);
 
+        JButton startAttendanceButton = new JButton("Start Attendance");
+        startAttendanceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                attendanceStarter x = new attendanceStarter();
+                dispose();
+            }
+        });
+        constraints.gridx = 3;
+        constraints.gridy = 0;
+        panel.add(startAttendanceButton, constraints);
+
         add(panel);
         pack(); // Adjusting frame size to fit components
         setLocationRelativeTo(null); // Centering the frame on the screen
