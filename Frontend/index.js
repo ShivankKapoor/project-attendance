@@ -38,44 +38,34 @@ document
 		}
 	});
 
-document.addEventListener("DOMContentLoaded", function () {
-	// Set up the time window for check-in
-	enableCheckInWithinTimeWindow("18:00", "21:15");
-});
-
-function enableCheckInWithinTimeWindow(startTime, endTime) {
+function enableCheckInForDateTimeAndDuration(dateTimeString, durationMinutes) {
 	const now = new Date();
-	const [startHours, startMinutes] = startTime
-		.split(":")
-		.map((num) => parseInt(num, 10));
-	const [endHours, endMinutes] = endTime
-		.split(":")
-		.map((num) => parseInt(num, 10));
-	const startDate = new Date(
-		now.getFullYear(),
-		now.getMonth(),
-		now.getDate(),
-		startHours,
-		startMinutes
-	);
-	const endDate = new Date(
-		now.getFullYear(),
-		now.getMonth(),
-		now.getDate(),
-		endHours,
-		endMinutes
-	);
+	const startTime = new Date(dateTimeString);
+	const endTime = new Date(startTime.getTime() + durationMinutes * 60000); // Add duration in minutes to start time
 
 	const checkInButton = document.getElementById("checkInButton");
 
-	if (now >= startDate && now <= endDate) {
+	// Check if 'now' is on the same day as 'startTime'
+	const isSameDay =
+		now.getFullYear() === startTime.getFullYear() &&
+		now.getMonth() === startTime.getMonth() &&
+		now.getDate() === startTime.getDate();
+
+	// Enable the button only if 'now' is within the specified time window on the same day
+	if (now >= startTime && now <= endTime && isSameDay) {
 		checkInButton.disabled = false;
-		checkInButton.classList.remove("disabled"); // Remove the 'disabled' class
+		checkInButton.classList.remove("disabled");
 	} else {
 		checkInButton.disabled = true;
-		checkInButton.classList.add("disabled"); // Add the 'disabled' class
+		checkInButton.classList.add("disabled");
 	}
 }
+
+// Example usage
+document.addEventListener("DOMContentLoaded", function () {
+	// Assuming the start DateTime is "2024-04-16 08:00:00" and the margin is 15 minutes
+	enableCheckInForDateTimeAndDuration("2024-04-15 21:00:00", 15);
+});
 
 document.getElementById("utdId").addEventListener("input", function (e) {
 	// Remove any characters that are not digits
