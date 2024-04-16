@@ -59,7 +59,12 @@ public class attendanceStarter extends JFrame {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Add your submit logic here
+                String courseID = courseIDField.getText();
+                String password = new String(passwordField.getPassword());
+                Integer minutes = (Integer) minutesDropDown.getSelectedItem();
+
+                
+                JOptionPane.showMessageDialog(attendanceStarter.this, "Course ID: " + courseID + "\nPassword: " + password + "\nMinutes: " + minutes, "Submission Details", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         constraints.gridx = 0;
