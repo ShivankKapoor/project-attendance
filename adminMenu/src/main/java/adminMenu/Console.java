@@ -1,3 +1,5 @@
+package adminMenu;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -33,8 +35,8 @@ public class Console extends JFrame {
         excuseAbsenceButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-              excuser x = new excuser();
-              dispose();
+                excuser x = new excuser();
+                dispose();
             }
         });
         constraints.gridx = 1;
