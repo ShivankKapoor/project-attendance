@@ -14,7 +14,5 @@ public class Main {
 
         Records.professorCheckin professorCheckin = new Records.professorCheckin("0", "test", 5);
 
-        password.addDailyPassword(professorCheckin);
-
     }
 }
