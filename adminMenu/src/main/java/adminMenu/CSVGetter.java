@@ -1,3 +1,10 @@
+//Written by Shivank Kapoor for Senior Design
+//NetID: SXK190175
+
+/*
+ * This file is the runner for the entire program. Is starts the console and other database stuff.
+ */
+
 package adminMenu;
 
 import javax.swing.*;
@@ -13,10 +20,10 @@ public class CSVGetter extends JFrame {
 
     public CSVGetter() {
         setTitle("CSV Getter");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);// Will end program if close button is clicked
         setResizable(false);
 
-        JPanel panel = new JPanel(new GridBagLayout());
+        JPanel panel = new JPanel(new GridBagLayout()); // Layout system
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(10, 10, 10, 10);
 
@@ -31,7 +38,8 @@ public class CSVGetter extends JFrame {
         panel.add(dayDropdown, constraints);
 
         // Month Dropdown
-        String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+        String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
+                "October", "November", "December" };
         monthDropdown = new JComboBox<>(months);
         constraints.gridx = 1;
         panel.add(monthDropdown, constraints);
@@ -46,13 +54,13 @@ public class CSVGetter extends JFrame {
         panel.add(yearDropdown, constraints);
 
         // Class Dropdown
-        String[] classes = {"Test Class 1", "Test Class 2"};
+        String[] classes = { "Test Class 1", "Test Class 2" };
         classDropdown = new JComboBox<>(classes);
         constraints.gridx = 1;
         constraints.gridy = 1;
         panel.add(classDropdown, constraints);
 
-        JButton submitButton = new JButton("Get Attendance");
+        JButton submitButton = new JButton("Get Attendance"); // Will return the CSV when clicked
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -61,7 +69,9 @@ public class CSVGetter extends JFrame {
                 String selectedYear = (String) yearDropdown.getSelectedItem();
                 String selectedClass = (String) classDropdown.getSelectedItem();
                 String selectedDate = selectedYear + "-" + (monthDropdown.getSelectedIndex() + 1) + "-" + selectedDay;
-                JOptionPane.showMessageDialog(CSVGetter.this, "Selected date: " + selectedDate + "\nSelected class: " + selectedClass, "Selections", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(CSVGetter.this,
+                        "Selected date: " + selectedDate + "\nSelected class: " + selectedClass, "Selections",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
         });
         constraints.gridx = 1;
@@ -69,7 +79,7 @@ public class CSVGetter extends JFrame {
         constraints.anchor = GridBagConstraints.CENTER;
         panel.add(submitButton, constraints);
 
-        JButton goBackButton = new JButton("Go Back");
+        JButton goBackButton = new JButton("Go Back"); // Will go back to main console whe clicked
         goBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

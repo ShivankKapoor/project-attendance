@@ -1,3 +1,9 @@
+//Written by Shivank Kapoor for Senior Design
+//NetID: sxk190175
+/*
+ * Will let the admin start taking attendance
+ */
+
 package adminMenu;
 
 import adminMenu.dbConnection.password;
@@ -12,11 +18,11 @@ public class attendanceStarter extends JFrame {
 
     public attendanceStarter() {
         setTitle("Attendance Starter");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE); // Will end program if exited
         setResizable(false);
 
         JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints constraints = new GridBagConstraints();
+        GridBagConstraints constraints = new GridBagConstraints(); // Layut system
         constraints.insets = new Insets(10, 10, 10, 10);
 
         // Course ID Label
@@ -48,7 +54,7 @@ public class attendanceStarter extends JFrame {
         constraints.gridy = 4;
         panel.add(minutesLabel, constraints);
 
-        Integer[] minutes = new Integer[15];
+        Integer[] minutes = new Integer[15]; // add the minutes
         for (int i = 0; i < 15; i++) {
             minutes[i] = (i + 1) * 5;
         }
@@ -61,16 +67,18 @@ public class attendanceStarter extends JFrame {
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) { // Will send password and minutes to the backend
                 String courseID = courseIDField.getText();
                 String password = new String(passwordField.getPassword());
                 Integer minutes = (Integer) minutesDropDown.getSelectedItem();
                 password dailyPassword = new password();
                 password dailyPass = new password();
-                Records.professorCheckin professorCheckin = new Records.professorCheckin(courseID, password, minutes);
-                dailyPass.addDailyPassword(professorCheckin);
-                System.out.println(password);
-                JOptionPane.showMessageDialog(attendanceStarter.this, "Course ID: " + courseID + "\nPassword: " + password + "\nMinutes: " + minutes, "Submission Details", JOptionPane.INFORMATION_MESSAGE);
+                Records.professorCheckin professorCheckin = new Records.professorCheckin(courseID, password, minutes); //Sends it to databse
+                dailyPass.addDailyPassword(professorCheckin); //Adds password
+                System.out.println(password); //Prints password
+                JOptionPane.showMessageDialog(attendanceStarter.this,
+                        "Course ID: " + courseID + "\nPassword: " + password + "\nMinutes: " + minutes,
+                        "Submission Details", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         constraints.gridx = 0;
@@ -82,8 +90,8 @@ public class attendanceStarter extends JFrame {
         goBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Console x = new Console();
-                dispose();
+                new Console(); // open console
+                dispose(); // close current window
             }
         });
         constraints.gridx = 0;
@@ -92,7 +100,7 @@ public class attendanceStarter extends JFrame {
 
         add(panel);
         pack();
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(null); // open in middle to screen
         setVisible(true);
     }
 }

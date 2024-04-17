@@ -1,5 +1,10 @@
 //Written by Shivank Kapoor for Senior Design
 //NetID: sxk190175
+/*
+ * This file will show the admin what students have violated class rules.
+ *  -If they have signed if from wrong IP
+ *  -If they have missed class more than 3 times in a row
+ */
 
 package adminMenu;
 
