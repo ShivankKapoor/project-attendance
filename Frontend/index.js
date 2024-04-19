@@ -1,7 +1,9 @@
+// Listen for the DOMContentLoaded event to initialize the script after the DOM is fully loaded.
 document.addEventListener("DOMContentLoaded", function () {
 	getLocation();
 });
 
+// Fetches the user's location based on their IP address using the ip-api service.
 function getLocation() {
 	fetch("http://ip-api.com/json/?fields=8208")
 		.then((response) => response.json())
@@ -19,6 +21,7 @@ function getLocation() {
 	console.log("Will Call page location");
 }
 
+// Handles the check-in process when the "checkInButton" is clicked. It validates form input fields and displays an alert.
 document
 	.getElementById("checkInButton")
 	.addEventListener("click", function (event) {
@@ -38,6 +41,7 @@ document
 		}
 	});
 
+// Enables the "checkInButton" within a specific date and time range if the current date and time fall within that range.
 function enableCheckInForDateTimeAndDuration(dateTimeString, durationMinutes) {
 	const now = new Date();
 	const startTime = new Date(dateTimeString);
@@ -61,12 +65,13 @@ function enableCheckInForDateTimeAndDuration(dateTimeString, durationMinutes) {
 	}
 }
 
-// Example usage
+// Example usage of enabling the check-in button based on a specific date, time, and duration.
 document.addEventListener("DOMContentLoaded", function () {
-	// Assuming the start DateTime is "2024-04-16 08:00:00" and the margin is 15 minutes
+	// Assuming the start DateTime is "2024-04-15 21:00:00" and the margin is 15 minutes
 	enableCheckInForDateTimeAndDuration("2024-04-15 21:00:00", 15);
 });
 
+// Sanitizes the input for the "utdId" field to only allow digits and limit the length to 10 digits.
 document.getElementById("utdId").addEventListener("input", function (e) {
 	// Remove any characters that are not digits
 	this.value = this.value.replace(/[^0-9]/g, "");
@@ -77,6 +82,7 @@ document.getElementById("utdId").addEventListener("input", function (e) {
 	}
 });
 
+// Validates and sanitizes the input for the "class" field to match a specific format (e.g., "CS1234.001").
 document.getElementById("class").addEventListener("input", function (e) {
 	const regex = /^[A-Za-z]{2}\d{4}\.\d{3}$/;
 	// Allows valid input or a subset of the valid input that could lead to a valid state
