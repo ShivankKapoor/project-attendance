@@ -1,14 +1,13 @@
 //Written by Shivank Kapoor for Senior Design
 //NetID: sxk190175
 /*
- * Will let the admin start taking attendance
+ * Allows the admin to start taking attendance
  */
 
 package adminMenu;
 
-import adminMenu.dbConnection.password;
-import adminMenu.dbConnection.password;
 import record.Records;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,7 +21,7 @@ public class attendanceStarter extends JFrame {
         setResizable(false);
 
         JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints constraints = new GridBagConstraints(); // Layut system
+        GridBagConstraints constraints = new GridBagConstraints(); // Layout system
         constraints.insets = new Insets(10, 10, 10, 10);
 
         // Course ID Label
@@ -32,35 +31,37 @@ public class attendanceStarter extends JFrame {
         panel.add(courseIDLabel, constraints);
 
         // Course ID Text Field
-        JTextField courseIDField = new JTextField(15);
-        constraints.gridx = 0;
-        constraints.gridy = 1;
+        JTextField courseIDField = new JTextField(20);
+        constraints.gridx = 1;
+        constraints.gridy = 0;
         panel.add(courseIDField, constraints);
 
-        // Password Field
+        // Password Label
         JLabel passwordLabel = new JLabel("Password:");
         constraints.gridx = 0;
-        constraints.gridy = 2;
+        constraints.gridy = 1;
         panel.add(passwordLabel, constraints);
 
-        JPasswordField passwordField = new JPasswordField(15);
-        constraints.gridx = 0;
-        constraints.gridy = 3;
+        // Password Field
+        JPasswordField passwordField = new JPasswordField(20);
+        constraints.gridx = 1;
+        constraints.gridy = 1;
         panel.add(passwordField, constraints);
 
-        // Minutes Dropdown
+        // Minutes Label
         JLabel minutesLabel = new JLabel("Minutes:");
         constraints.gridx = 0;
-        constraints.gridy = 4;
+        constraints.gridy = 2;
         panel.add(minutesLabel, constraints);
 
+        // Minutes Dropdown
         Integer[] minutes = new Integer[15]; // add the minutes
         for (int i = 0; i < 15; i++) {
             minutes[i] = (i + 1) * 5;
         }
         JComboBox<Integer> minutesDropDown = new JComboBox<>(minutes);
-        constraints.gridx = 0;
-        constraints.gridy = 5;
+        constraints.gridx = 1;
+        constraints.gridy = 2;
         panel.add(minutesDropDown, constraints);
 
         // Submit Button
@@ -71,18 +72,19 @@ public class attendanceStarter extends JFrame {
                 String courseID = courseIDField.getText();
                 String password = new String(passwordField.getPassword());
                 Integer minutes = (Integer) minutesDropDown.getSelectedItem();
-                password dailyPassword = new password();
-                password dailyPass = new password();
-                Records.professorCheckin professorCheckin = new Records.professorCheckin(courseID, password, minutes); //Sends it to databse
-                dailyPass.addDailyPassword(professorCheckin); //Adds password
-                System.out.println(password); //Prints password
+                Records.professorCheckin professorCheckin = new Records.professorCheckin(courseID, password, minutes); // Sends
+                                                                                                                       // it
+                                                                                                                       // to
+                                                                                                                       // database
+                // TODO: Add logic to handle submission
                 JOptionPane.showMessageDialog(attendanceStarter.this,
                         "Course ID: " + courseID + "\nPassword: " + password + "\nMinutes: " + minutes,
                         "Submission Details", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         constraints.gridx = 0;
-        constraints.gridy = 6;
+        constraints.gridy = 3;
+        constraints.gridwidth = 2;
         panel.add(submitButton, constraints);
 
         // Go Back Button
@@ -90,17 +92,18 @@ public class attendanceStarter extends JFrame {
         goBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new Console(); // open console
-                dispose(); // close current window
+                new Console();
+                dispose();
             }
         });
         constraints.gridx = 0;
-        constraints.gridy = 7;
+        constraints.gridy = 4;
+        constraints.gridwidth = 2;
         panel.add(goBackButton, constraints);
 
         add(panel);
         pack();
-        setLocationRelativeTo(null); // open in middle to screen
+        setLocationRelativeTo(null); // open in the middle of the screen
         setVisible(true);
     }
 }
