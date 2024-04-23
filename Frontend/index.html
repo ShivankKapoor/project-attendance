@@ -9,9 +9,8 @@
   <body>
   <form id="checkInForm">
     <h2>Check In</h2>
-    <input type="text" id="utdId" placeholder="UTD-ID" required>
-    <input type="text" id="netId" placeholder="NET-ID" required>
-    <input type="text" id="name" placeholder="Full Name" required>
+    <input type="text" id="utdId" placeholder="UTD-ID" pattern="\d*" required>
+    <input type="text" id="class" placeholder="Class" pattern="^[A-Za-z]{2}\d{4}\.\d{3}$" required>
     <input type="text" id="passcode" placeholder="Passcode" required>
     <div id="dataContainer" class="location-info">
     </div>

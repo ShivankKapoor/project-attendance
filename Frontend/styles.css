@@ -20,6 +20,13 @@ input:invalid {
 	border-color: red;
 }
 
+button.disabled {
+	background-color: #cccccc; /* Light grey */
+	color: #666666; /* Darker grey */
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
 form {
 	max-width: 350px;
 	padding: 30px;

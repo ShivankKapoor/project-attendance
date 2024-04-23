@@ -75,11 +75,11 @@ public class dbConnection {
             }
 
             //preparing statement to execute to enter the values of the student for the course and date
-            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO `seniorProject`.`checkIn` (`courseId`, `utdId`, `netId`, `time`) VALUES (?, ?, ?, ?)");
+            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO `seniorProject`.`checkIn` (`classId`, `utdId`, `passcode`, `time`) VALUES (?, ?, ?, ?)");
             LocalDateTime date = LocalDateTime.now();
-            pstmt.setString(1, checkIn.courseId());
+            pstmt.setString(1, checkIn.classId());
             pstmt.setInt(2, checkIn.utdId());
-            pstmt.setString(3, checkIn.netId());
+            pstmt.setString(3, checkIn.passcode());
             pstmt.setString(4, String.valueOf(date));
 
             pstmt.executeUpdate();
