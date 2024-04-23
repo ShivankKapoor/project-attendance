@@ -8,6 +8,9 @@
 
 package adminMenu;
 
+import adminMenu.dbConnection.course;
+import record.Records;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -26,7 +29,14 @@ public class warnings extends JFrame {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        String[] classes = { "Class 1", "Class 2", "Class 3" }; // This is just a placeholder for the classes
+        // Class Dropdown
+        course course = new course(); // create a new object that lets us get all classes
+        Object[] classObjects=course.getAllClasses().toArray(); // get all these classes as objects
+
+        String[] classes = new String[classObjects.length];
+        for (int i = 0; i < classObjects.length; i++) {
+            classes[i] = ((Records.course) classObjects[i]).name(); // get all of those objects class names
+        }
         classDropdown = new JComboBox<>(classes);
         panel.add(classDropdown, BorderLayout.NORTH);
 
