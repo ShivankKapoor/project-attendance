@@ -11,15 +11,15 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!");
-//        Console x = new Console();
+        Console x = new Console();
 
-        password password = new password();
+//        password password = new password();
         
-        course course = new course();
+//        course course = new course();
         
-        Records.professorCheckin professorCheckin = new Records.professorCheckin("0", "test", 5);
+//        Records.professorCheckin professorCheckin = new Records.professorCheckin("0", "test", 5);
 
-        ArrayList<Records.course> classValues = course.getAllClasses();
+//        ArrayList<Records.course> classValues = course.getAllClasses();
 
 
     }

@@ -63,22 +63,35 @@ public class course {
         return classValues;
     }
 
+    //TODO Hiran finish this up and check this please
     public boolean getAllClassesForStudentId(int utdId) {
 
         Connection conn = null;
         boolean isInClass = false;
-        ArrayList<String> classesValues = null;
+        ArrayList<Records.courseInfo> classesValues = null;
 
         try {
             conn = DriverManager.getConnection(JDBCConnectionString);
 
-            PreparedStatement pstmt = conn.prepareStatement("select sc.utdId, c.courseId, c.name, c.classId from " +
-                    "seniorProject.studentClass as sc left join seniorProject.class as c on c.courseId where sc.utdId = ?;");
+            PreparedStatement pstmt = conn.prepareStatement("select c.classId, c.courseId, c.name from seniorProject.studentClass as sc " +
+                    "inner join seniorProject.class as c on c.courseId = sc.courseId where sc.utdId = ?;");
 
             LocalDateTime date = LocalDateTime.now();
             pstmt.setInt(1, utdId);
 
-            pstmt.executeQuery();
+            ResultSet rs = pstmt.executeQuery();
+
+            classesValues = new ArrayList<>();
+
+            while (rs.next()) {
+                String classId = rs.getString("classId");
+                String courseId = rs.getString("courseId");
+                String name = rs.getString("name");
+
+                Records.courseInfo courseInfo = new Records.courseInfo(classId, courseId, name);
+
+                classesValues.add(courseInfo);
+            }
 
         } catch (SQLException ex) {
             //to catch any errors
