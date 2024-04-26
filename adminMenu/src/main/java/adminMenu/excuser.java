@@ -6,6 +6,9 @@
  */
 
 package adminMenu;
+import adminMenu.dbConnection.course;
+import record.Records;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,7 +19,7 @@ public class excuser extends JFrame {
     private JComboBox<String> monthDropdown; // Will hold the month field for the date of excusable absence
     private JComboBox<String> yearDropdown; // Will hold the year field for the date of excusable absence
     private JTextField utdIdField; // Will hold the utdID of the student who needs to be excused
-    private JTextField courseIdField; // Will hold the class that student needs to be excused from
+    private JComboBox<String>  courseIdField; // Will hold the class that student needs to be excused from
 
     public excuser() {
         setTitle("Excuser");
@@ -66,7 +69,17 @@ public class excuser extends JFrame {
         constraints.anchor = GridBagConstraints.EAST;
         panel.add(courseIdLabel, constraints);
 
-        courseIdField = new JTextField(10); //The input for course ID (WILL BE CHANGE FOR DROP DOWN)
+
+        course course = new course(); // create a new object that lets us get all classes
+        Object[] classObjects=course.getAllClasses().toArray(); // get all these classes as objects
+
+        String[] classes = new String[classObjects.length];
+        for (int i = 0; i < classObjects.length; i++) {
+            classes[i] = ((Records.course) classObjects[i]).name(); // get all of those objects class names
+        }
+
+
+        courseIdField = new JComboBox<>(classes); //The input for course ID (WILL BE CHANGE FOR DROP DOWN)
         constraints.gridx = 1;
         constraints.anchor = GridBagConstraints.WEST;
         panel.add(courseIdField, constraints);
@@ -80,7 +93,7 @@ public class excuser extends JFrame {
                 String selectedYear = (String) yearDropdown.getSelectedItem();
                 String selectedDate = selectedYear + "-" + (monthDropdown.getSelectedIndex() + 1) + "-" + selectedDay;
                 String utdId = utdIdField.getText();
-                String courseId = courseIdField.getText();
+                String courseId = (String) courseIdField.getSelectedItem();
                 JOptionPane.showMessageDialog(excuser.this, "Selected date: " + selectedDate + "\nUTD ID: " + utdId + "\nCourse ID: " + courseId, "Excuse Details", JOptionPane.INFORMATION_MESSAGE);
             }
         });

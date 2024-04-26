@@ -6,6 +6,7 @@
 
 package adminMenu;
 
+import adminMenu.dbConnection.course;
 import record.Records;
 
 import javax.swing.*;
@@ -30,8 +31,16 @@ public class attendanceStarter extends JFrame {
         constraints.gridy = 0;
         panel.add(courseIDLabel, constraints);
 
-        // Course ID Text Field
-        JTextField courseIDField = new JTextField(20);
+        // Class Dropdown
+        course course = new course(); // create a new object that lets us get all classes
+        Object[] classObjects=course.getAllClasses().toArray(); // get all these classes as objects
+
+        String[] classes = new String[classObjects.length];
+        for (int i = 0; i < classObjects.length; i++) {
+            classes[i] = ((Records.course) classObjects[i]).name(); // get all of those objects class names
+        }
+
+        JComboBox<String> courseIDField =  new JComboBox<>(classes);
         constraints.gridx = 1;
         constraints.gridy = 0;
         panel.add(courseIDField, constraints);
@@ -69,7 +78,7 @@ public class attendanceStarter extends JFrame {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) { // Will send password and minutes to the backend
-                String courseID = courseIDField.getText();
+                String courseID = (String) courseIDField.getSelectedItem();
                 String password = new String(passwordField.getPassword());
                 Integer minutes = (Integer) minutesDropDown.getSelectedItem();
                 Records.professorCheckin professorCheckin = new Records.professorCheckin(courseID, password, minutes); // Sends
