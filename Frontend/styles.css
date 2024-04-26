@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+
 body {
   font-family: Arial, sans-serif;
   display: flex;
@@ -11,6 +14,20 @@ body {
 
 .location-info {
   margin-bottom: 20px;
+  position: fixed;
+  bottom: 0;
+  left: 1vw;
+}
+
+input:invalid {
+  border-color: red;
+}
+
+button.disabled {
+  background-color: #cccccc; /* Light grey */
+  color: #666666; /* Darker grey */
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 form {
@@ -79,4 +96,29 @@ label {
 
 .register-button:hover {
   background: linear-gradient(to right, #e87500, #e87500);
+}
+
+/* CSS for the logo and text at the very top of the page */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Aligns content to the left */
+  position: fixed; /* Keeps the header at the top even when scrolling */
+  top: 0; /* Positioning at the top of the page */
+  width: 100%; /* Ensures the header spans the full width */
+  padding: 10px; /* Adds some padding around the content */
+  background-color: #f4f4f4; /* Background color to match the rest of the page */
+  border-bottom: 1px solid #ccc; /* Adds a subtle border at the bottom */
+}
+
+.logo {
+  width: 90px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.title {
+  font-size: 3.5em;
+  font-family:"Comic Neue", cursive;
+  font-weight: 700;
 }

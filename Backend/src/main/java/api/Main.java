@@ -110,7 +110,7 @@ public class Main {
 
         data.put("login", isLogin);
 
-        ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.CREATED)
+        ResponseEntity<Map> resEnt = ResponseEntity.status(HttpStatus.ACCEPTED)
                 .header("Test", "Value")
                 .body(data);
 
