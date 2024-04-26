@@ -202,7 +202,7 @@ public class dbConnection {
 
             java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
             System.out.println("current date "+ date);
-            PreparedStatement getStartTiming = conn.prepareStatement("SELECT `startDateTime` FROM `seniorProject`.`class` WHERE `classId`=? AND date(seniorProject.class.startDateTime)=?;");
+            PreparedStatement getStartTiming = conn.prepareStatement("SELECT `startTime` FROM `seniorProject`.`classProfessorCheckIn` Where `courseId`=? AND date(`seniorProject`.`classProfessorCheckIn`.`startDate`)=?;");
             getStartTiming.setString(1, courseId);
             getStartTiming.setDate(2, date);
             ResultSet ClassStartTime = getStartTiming.executeQuery();
