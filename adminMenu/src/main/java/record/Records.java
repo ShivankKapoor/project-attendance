@@ -9,6 +9,7 @@ public record Records(List<Records> recordsList) {
 
     public record courseInfo(String classId, String courseId, String className) { }
 
+    public record newUser(int utdId, String Name, String netId) {}
 }
 
 
