@@ -8,15 +8,21 @@
 package adminMenu;
 
 import adminMenu.dbConnection.course;
-import adminMenu.dbConnection.password;
+//import adminMenu.dbConnection.password;
+import adminMenu.fileImport.fileImport;
 import record.Records;
 import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
-        Console x = new Console(); // Create new console object
+//        Console x = new Console(); // Create new console object
         //password password = new password();
         course course = new course();
-         //Records.professorCheckin professorCheckin = new Records.professorCheckin("0", "test", 5);
-        ArrayList<Records.course> classValues = course.getAllClasses();
+         Records.professorCheckin professorCheckin = new Records.professorCheckin("0", "test", 5);
+//        ArrayList<Records.course> classValues = course.getAllClasses();
+
+        fileImport fileImport = new fileImport();
+
+        fileImport.importData();
+
     }
 }
