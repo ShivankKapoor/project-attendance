@@ -47,31 +47,31 @@ public class fileImport {
             PreparedStatement pStmt = conn.prepareStatement("INSERT IGNORE INTO `seniorProject`.`users` " +
                     "(`utdId`, `Name`, `netId`) VALUES (?, ?, ?);");
 
-            PreparedStatement pStmt2 = conn.prepareStatement("INSERT IGNORE INTO `seniorProject`.`users` " +
-                    "(`utdId`, `Name`, `netId`) VALUES (?, ?, ?);");
+            PreparedStatement pStmt2 = conn.prepareStatement("INSERT INTO `seniorProject`.`studentClass` " +
+                    "(`courseId`, `utdId`) VALUES (?, ?);");
 
             // Process the tab-separated data
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] fields = line.split("\t");
 
-                    // This is where the inserts go
-
-//                Records.newUser newUser = new Records.newUser(Integer.parseInt(fields[1]), fields[2], fields[0]);
-
                 String netId = fields[0];
                 int utdId = Integer.parseInt(fields[1]);
                 String name = (fields[2] + " " + fields[4]);
 
-                pStmt.setInt(1, utdId); //This might be pStmt.SetInt(0, fileid) depending on teh type of fileid)
+                pStmt.setInt(1, utdId);
                 pStmt.setString(2, name);
                 pStmt.setString(3, netId);
 
+                pStmt2.setString(1, fields[6]);
+                pStmt2.setString(2, fields[1]);
+
                 pStmt.addBatch();
-//                }
+                pStmt2.addBatch();
                 System.out.println();
             }
                 int[] returnValues = pStmt.executeBatch();
+                int[] returnValues2 = pStmt2.executeBatch();
                 System.out.println(Arrays.toString(returnValues));
 
         } catch (FileNotFoundException e) {

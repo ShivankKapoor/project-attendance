@@ -20,9 +20,9 @@ public class Main {
          Records.professorCheckin professorCheckin = new Records.professorCheckin("0", "test", 5);
 //        ArrayList<Records.course> classValues = course.getAllClasses();
 
-        course.getStudentsAttendanceBetween2GivenDaysInclusive("0", "2024-04-24", "2024-04-26");
+        fileImport fileImport = new fileImport();
 
-//        fileImport fileImport = new fileImport();
-//        fileImport.importData();
+        fileImport.importData();
+
     }
 }
