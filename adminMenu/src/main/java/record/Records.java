@@ -9,6 +9,8 @@ public record Records(List<Records> recordsList) {
 
     public record courseInfo(String classId, String courseId, String className) { }
 
+    public record daysPresent(int utdId, int daysPresent, String name) { }
+
     public record newUser(int utdId, String Name, String netId) {}
 }
 

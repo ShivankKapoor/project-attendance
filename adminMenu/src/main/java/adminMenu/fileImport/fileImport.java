@@ -47,6 +47,9 @@ public class fileImport {
             PreparedStatement pStmt = conn.prepareStatement("INSERT IGNORE INTO `seniorProject`.`users` " +
                     "(`utdId`, `Name`, `netId`) VALUES (?, ?, ?);");
 
+            PreparedStatement pStmt2 = conn.prepareStatement("INSERT IGNORE INTO `seniorProject`.`users` " +
+                    "(`utdId`, `Name`, `netId`) VALUES (?, ?, ?);");
+
             // Process the tab-separated data
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -66,7 +69,7 @@ public class fileImport {
 
                 pStmt.addBatch();
 //                }
-                System.out.println(); // Print a new line after each row
+                System.out.println();
             }
                 int[] returnValues = pStmt.executeBatch();
                 System.out.println(Arrays.toString(returnValues));
