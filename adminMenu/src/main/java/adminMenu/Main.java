@@ -8,7 +8,7 @@
 package adminMenu;
 
 import adminMenu.dbConnection.course;
-import adminMenu.dbConnection.password;
+//import adminMenu.dbConnection.password;
 import adminMenu.fileImport.fileImport;
 import record.Records;
 import java.util.ArrayList;
@@ -17,10 +17,10 @@ public class Main {
 //        Console x = new Console(); // Create new console object
         //password password = new password();
         course course = new course();
-         //Records.professorCheckin professorCheckin = new Records.professorCheckin("0", "test", 5);
+         Records.professorCheckin professorCheckin = new Records.professorCheckin("0", "test", 5);
 //        ArrayList<Records.course> classValues = course.getAllClasses();
 
-        course.getStudentsAttendanceBetween2GivenDaysInclusive(0, "2024-04-24", "2024-04-26");
+        course.getStudentsAttendanceBetween2GivenDaysInclusive("0", "2024-04-24", "2024-04-26");
 
 //        fileImport fileImport = new fileImport();
 //        fileImport.importData();

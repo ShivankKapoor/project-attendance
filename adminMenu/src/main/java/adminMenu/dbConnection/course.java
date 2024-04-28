@@ -107,7 +107,7 @@ public class course {
     }
 
 
-    public void startProfessorCheckIn(int courseId, int timeBuffer, String passwordOfTheDay) {
+    public void startProfessorCheckIn(Records.professorCheckin professorCheckin) {
 
         Connection conn = null;
         boolean isInClass = false;
@@ -128,11 +128,11 @@ public class course {
                     "(`courseId`, `startDate`, `startTime`, `buffer`, `passwordOfTheDay`) VALUES (?,?,?,?,?);\n");
 
             LocalDateTime date = LocalDateTime.now();
-            pstmt.setInt(1, courseId);
+            pstmt.setString(1, professorCheckin.courseId());
             pstmt.setString(2, formattedDate);
             pstmt.setString(3, formattedTime);
-            pstmt.setInt(4, (timeBuffer * 100));
-            pstmt.setString(5, passwordOfTheDay);
+            pstmt.setInt(4, (professorCheckin.timeBuffer() * 100));
+            pstmt.setString(5, professorCheckin.password());
 
             boolean rs = pstmt.execute();
 
@@ -144,7 +144,7 @@ public class course {
         }
     }
 
-    public ArrayList<Integer> getStudentsWhoMissed3ClassesConsequtivly(int courseId) {
+    public ArrayList<Integer> getStudentsWhoMissed3ClassesConsequtivly(String courseId) {
 
         Connection conn = null;
         boolean isInClass = false;
@@ -175,8 +175,8 @@ public class course {
                     "AND ci.utdId IS NULL;");
 
             LocalDateTime date = LocalDateTime.now();
-            pstmt.setInt(1, courseId);
-            pstmt.setInt(2, courseId);
+            pstmt.setString(1, courseId);
+            pstmt.setString(2, courseId);
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -199,7 +199,7 @@ public class course {
 
 
     // This is used to get the dates that a professor wants a report for
-    public ArrayList<String> getDatesList(int courseId) {
+    public ArrayList<String> getDatesList(String courseId) {
 
         Connection conn = null;
         boolean isInClass = false;
@@ -211,7 +211,7 @@ public class course {
             PreparedStatement pstmt = conn.prepareStatement("SELECT startDate FROM seniorProject.classProfessorCheckIn " +
                     "where seniorProject.classProfessorCheckIn.courseId = ?;");
 
-            pstmt.setInt(1, courseId);
+            pstmt.setString(1, courseId);
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -234,7 +234,7 @@ public class course {
 
 
 
-    public ArrayList<Records.daysPresent> getStudentsAttendanceBetween2GivenDaysInclusive(int courseId, String day1, String day2) {
+    public ArrayList<Records.daysPresent> getStudentsAttendanceBetween2GivenDaysInclusive(String courseId, String day1, String day2) {
 
         Connection conn = null;
         boolean isInClass = false;
@@ -250,7 +250,7 @@ public class course {
                     "WHERE sc.courseId = ? GROUP BY u.name, sc.utdId;");
 
             LocalDateTime date = LocalDateTime.now();
-            pstmt.setInt(3, courseId);
+            pstmt.setString(3, courseId);
             pstmt.setString(1, day1);
             pstmt.setString(2, day2);
 
