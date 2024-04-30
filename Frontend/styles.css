@@ -94,3 +94,27 @@ label {
 .register-button:hover {
 	background: linear-gradient(to right, #e87500, #e87500);
 }
+
+select {
+	width: 100%; /* Matches the width of other input fields */
+	padding: 12px; /* Same padding as text and password inputs */
+	margin: 10px 0; /* Matches margin of other inputs */
+	display: inline-block; /* Ensures the dropdown behaves like other input elements */
+	border: 1px solid #ccc; /* Standard border to match other inputs */
+	border-radius: 5px; /* Rounded corners like other inputs */
+	box-sizing: border-box; /* Includes padding and border in the width/height */
+	font-size: 16px; /* Font size to match other inputs */
+	background-color: #ffffff; /* Ensures background matches */
+	cursor: pointer; /* Cursor indicates it's a selectable field */
+}
+
+select:focus {
+	border-color: #66afe9; /* Focus style to match your theme */
+	outline: 0; /* Removes default focus outline */
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+		0 0 8px rgba(102, 175, 233, 0.6); /* Focus shadow to enhance visibility */
+}
+
+select:hover {
+	border-color: #888; /* Hover effect to match input fields */
+}
