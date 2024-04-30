@@ -3,11 +3,15 @@ document.addEventListener("DOMContentLoaded", function () {
 	getLocation();
 });
 
+var city = "";
+
 // Fetches the user's location based on their IP address using the ip-api service.
-function getLocation() {
-	fetch("http://ip-api.com/json/?fields=8208")
+async function getLocation() {
+	const checkInButton = document.getElementById("checkInButton");
+	await fetch("http://ip-api.com/json/?fields=8208")
 		.then((response) => response.json())
 		.then((data) => {
+			city = data.city;
 			console.log(data.city);
 			console.log(data.query);
 			const formattedData = `
@@ -55,8 +59,16 @@ function enableCheckInForDateTimeAndDuration(dateTimeString, durationMinutes) {
 		now.getMonth() === startTime.getMonth() &&
 		now.getDate() === startTime.getDate();
 
+	console.log("THIS IS THE CITY: " + city);
 	// Enable the button only if 'now' is within the specified time window on the same day
 	if (now >= startTime && now <= endTime && isSameDay) {
+		checkInButton.disabled = false;
+		checkInButton.classList.remove("disabled");
+	} else {
+		checkInButton.disabled = true;
+		checkInButton.classList.add("disabled");
+	}
+	if (city == "Richardson") {
 		checkInButton.disabled = false;
 		checkInButton.classList.remove("disabled");
 	} else {
