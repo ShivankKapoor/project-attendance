@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class CSVGetter extends JFrame {
     private JComboBox<String> dayDropdown;
@@ -73,14 +74,24 @@ public class CSVGetter extends JFrame {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selectedDay = (String) dayDropdown.getSelectedItem();
-                String selectedMonth = (String) monthDropdown.getSelectedItem();
+                String selectedDay = String.format("%02d", Integer.parseInt((String) dayDropdown.getSelectedItem()));
+                String selectedMonth = String.format("%02d", monthDropdown.getSelectedIndex() + 1);
                 String selectedYear = (String) yearDropdown.getSelectedItem();
+                String selectedDate = selectedYear + "-" + selectedMonth + "-" + selectedDay;
                 String selectedClass = (String) classDropdown.getSelectedItem();
-                String selectedDate = selectedYear + "-" + (monthDropdown.getSelectedIndex() + 1) + "-" + selectedDay;
-                JOptionPane.showMessageDialog(CSVGetter.this,
-                        "Selected date: " + selectedDate + "\nSelected class: " + selectedClass, "Selections",
-                        JOptionPane.INFORMATION_MESSAGE);
+                String courseID="";
+                for (Object classObject : classObjects) {
+                    if (Objects.equals(((Records.course) classObject).name(), selectedClass)) {
+                        courseID = ((Records.course) classObject).course();
+                    }
+                }
+               String data= String.valueOf((course.getStudentsAttendanceBetween2GivenDaysInclusive(courseID,selectedDate,selectedDate)));
+                JOptionPane.showMessageDialog(CSVGetter.this,data);
+
+
+                //JOptionPane.showMessageDialog(CSVGetter.this,
+                 //       "Selected date: " + selectedDate + "\nSelected class: " + selectedClass+ "\nCouse ID: "+courseID, "Selections",
+                //        JOptionPane.INFORMATION_MESSAGE);
             }
         });
         constraints.gridx = 1;
