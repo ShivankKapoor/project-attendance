@@ -51,7 +51,7 @@ public class Importer extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser(); // Instantiate new JFileChooser
-                FileNameExtensionFilter csvFilter = new FileNameExtensionFilter("CSV Files", "csv");
+                FileNameExtensionFilter csvFilter = new FileNameExtensionFilter("Txt Files", "txt");
                 fileChooser.setFileFilter(csvFilter);
                 int result = fileChooser.showOpenDialog(null); // Using 'null' to open in the current frame context
                 if (result == JFileChooser.APPROVE_OPTION) {
