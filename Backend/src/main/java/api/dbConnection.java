@@ -223,6 +223,7 @@ public class dbConnection {
         return timing;
 
     }
+
     public String timeWindow(String courseId){
 
         Connection conn = null;
@@ -254,6 +255,45 @@ public class dbConnection {
         System.out.println("the date and timing:"+ timingWindow);
         return timingWindow;
 
+    }
+
+    public ArrayList<Records.courseInfo> getAllClassesForStudentId(int utdId) {
+
+        Connection conn = null;
+        boolean isInClass = false;
+        ArrayList<Records.courseInfo> classesValues = null;
+
+        try {
+            conn = DriverManager.getConnection(JDBCConnectionString);
+
+            PreparedStatement pstmt = conn.prepareStatement("select c.classId, c.courseId, c.name from seniorProject.studentClass as sc " +
+                    "inner join seniorProject.class as c on c.courseId = sc.courseId where sc.utdId = ?;");
+
+            LocalDateTime date = LocalDateTime.now();
+            pstmt.setInt(1, utdId);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            classesValues = new ArrayList<>();
+
+            while (rs.next()) {
+                String classId = rs.getString("classId");
+                String courseId = rs.getString("courseId");
+                String name = rs.getString("name");
+
+                Records.courseInfo courseInfo = new Records.courseInfo(classId, courseId, name);
+
+                classesValues.add(courseInfo);
+            }
+
+        } catch (SQLException ex) {
+            //to catch any errors
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+
+        return classesValues;
     }
 
 }

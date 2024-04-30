@@ -1,28 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Check In</title>
-    <link rel="stylesheet" type="text/css" href="styles.css" />
-  </head>
-  <body>
-    <!-- Ensure the header is at the top -->
-    <div class="header">
-      <img src="Logo.png" alt="UTD Logo" class="logo" />
-      <span class="title">UTD Attendance</span>
-    </div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Check In</title>
+		<link rel="stylesheet" type="text/css" href="styles.css" />
+	</head>
+	<body>
+		<!-- Ensure the header is at the top -->
+		<div class="header">
+			<img src="Logo.png" alt="UTD Logo" class="logo" />
+			<span class="title">UTD Attendance</span>
+		</div>
 
-    <form id="checkInForm">
-      <h2>Check In</h2>
-      <input type="text" id="utdId" placeholder="UTD-ID" pattern="\d*" required>
-      <input type="text" id="class" placeholder="Class" pattern="^[A-Za-z]{2}\d{4}\.\d{3}$" required>
-      <input type="text" id="passcode" placeholder="Passcode" required>
-      <div id="dataContainer" class="location-info"></div>
-      <div>
-        <button class="register-button" id="checkInButton">Check In</button>
-      </div>
-      <script src="index.js"></script>
-    </form>
-  </body>
+		<form id="checkInForm">
+			<h2>Check In</h2>
+			<div id="utdIdContainer">
+				<input
+					type="text"
+					id="utdId"
+					placeholder="UTD-ID"
+					pattern="\d*"
+					required
+				/>
+				<button class="register-button" id="submitButton">Submit</button>
+			</div>
+			<div id="additionalFields" style="display: none">
+				<select id="class" required>
+					<option value="">Select Class</option>
+					<option value="AB1234.001">AB1234.001</option>
+					<option value="CD5678.002">CD5678.002</option>
+					<option value="EF9012.003">EF9012.003</option>
+					<!-- Add more options as needed -->
+				</select>
+				<input type="text" id="passcode" placeholder="Passcode" required />
+				<button
+					class="register-button"
+					id="checkInButton"
+					style="display: none"
+				>
+					Check In
+				</button>
+			</div>
+			<div id="dataContainer" class="location-info"></div>
+			<script src="index.js"></script>
+		</form>
+	</body>
 </html>
