@@ -107,6 +107,7 @@ public class course {
     }
 
 
+    //For starting attendance in admin menu
     public void startProfessorCheckIn(Records.professorCheckin professorCheckin) {
 
         Connection conn = null;
@@ -144,6 +145,7 @@ public class course {
         }
     }
 
+    //For Warnings
     public ArrayList<Integer> getStudentsWhoMissed3ClassesConsequtivly(String courseId) {
 
         Connection conn = null;
@@ -234,6 +236,7 @@ public class course {
 
 
 
+    //To get CSV
     public ArrayList<Records.daysPresent> getStudentsAttendanceBetween2GivenDaysInclusive(String courseId, String day1, String day2) {
 
         Connection conn = null;
