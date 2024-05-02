@@ -95,7 +95,7 @@ public class excuser extends JFrame {
                     }
                 }
 
-                ArrayList<String> newUtdIds = course.getStudentsForCourseId(selectedCourseId);
+                ArrayList<Records.newId> newUtdIds = course.getStudentsForCourseId(selectedCourseId);
                 utdIdDropdown.setModel(new DefaultComboBoxModel<>(newUtdIds.toArray(new String[0])));
             }
         });
