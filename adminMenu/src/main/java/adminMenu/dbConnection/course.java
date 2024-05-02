@@ -281,6 +281,74 @@ public class course {
         return daysPresentsForEachStudentBetween2Days;
     }
 
+    public ArrayList<String> getStudentsForCourseId(String courseId) {
+
+        Connection conn = null;
+        boolean isInClass = false;
+        ArrayList<String> namesList = null;
+
+        try {
+            conn = DriverManager.getConnection(JDBCConnectionString);
+
+            PreparedStatement pstmt = conn.prepareStatement("SELECT users.Name FROM " +
+                    " seniorProject.studentClass join users using (utdId)" +
+                    " where studentClass.courseId = ?;");
+
+            LocalDateTime date = LocalDateTime.now();
+            pstmt.setString(1, courseId);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            namesList = new ArrayList<>();
+
+            while (rs.next()) {
+
+                String name = rs.getString("Name");
+                namesList.add(name);
+            }
+
+        } catch (SQLException ex) {
+            //to catch any errors
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+
+        return namesList;
+    }
+
+    // Create excuse absence api
+    public ArrayList<Records.daysPresent> excuseAbsence(String courseId, String utdId, String Date) {
+
+        Connection conn = null;
+        boolean isInClass = false;
+        ArrayList<Records.daysPresent> daysPresentsForEachStudentBetween2Days = null;
+
+        try {
+            conn = DriverManager.getConnection(JDBCConnectionString);
+
+            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO `seniorProject`.`checkIn` " +
+                    "(`courseId`, `utdId`, `time`) VALUES (?, ?, ?);");
+
+            LocalDateTime date = LocalDateTime.now();
+            pstmt.setString(1, courseId);
+            pstmt.setString(2, utdId);
+            pstmt.setString(3, Date);
+
+            pstmt.execute();
+
+            daysPresentsForEachStudentBetween2Days = new ArrayList<>();
+
+        } catch (SQLException ex) {
+            //to catch any errors
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+
+        return daysPresentsForEachStudentBetween2Days;
+    }
+
 
 }
 
