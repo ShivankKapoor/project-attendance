@@ -12,8 +12,8 @@ public class dbConnection {
 
 
     //database user ID and password strings
-//    String userId = dotenv.get("DB_UserId");
-//    String password = dotenv.get("DB_Password");
+    String userId = "admin";
+    String password = "Angry1123!";
 
 
 
@@ -300,6 +300,45 @@ public class dbConnection {
                 Records.courseInfo courseInfo = new Records.courseInfo(classId, courseId, name);
 
                 classesValues.add(courseInfo);
+            }
+
+        } catch (SQLException ex) {
+            //to catch any errors
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+
+        return classesValues;
+    }
+
+    public ArrayList<Records.timings> getTimings(String courseId) {
+
+        Connection conn = null;
+        boolean isInClass = false;
+        ArrayList<Records.timings> classesValues = null;
+
+        try {
+            conn = DriverManager.getConnection(JDBCConnectionString);
+
+            PreparedStatement pstmt = conn.prepareStatement("SELECT startDate, startTime, buffer FROM seniorProject.classProfessorCheckIn" +
+                    "where courseId = ? order by idclassProfessorCheckIn desc limit 1;");
+
+            LocalDateTime date = LocalDateTime.now();
+            pstmt.setString(1, courseId);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            classesValues = new ArrayList<>();
+
+            while (rs.next()) {
+                String startDate = rs.getString("startDate");
+                String startTime = rs.getString("startTime");
+                String timeBuffer = rs.getString("buffer");
+
+                Records.timings timings = new Records.timings(startDate, startTime, timeBuffer);
+
+                classesValues.add(timings);
             }
 
         } catch (SQLException ex) {
