@@ -117,6 +117,26 @@ public class Main {
         return CompletableFuture.completedFuture(resEnt);
     }
 
+    @CrossOrigin
+    @RequestMapping("/getAllClassesStudent")
+
+    CompletableFuture<ResponseEntity<Map<String, Object>>> getAllClassesStudent(@RequestBody Records.getAllClassesStudent request) throws SQLException {
+        dbConnection connection = new dbConnection();
+        List<Records.ClassInfo> classes = connection.getClassesForStudent(request.getStudentId());
+
+        Map<String, Object> data = new HashMap<>();
+        if (classes.isEmpty()) {
+            data.put("Error_Message", "No classes found for this student.");
+            return CompletableFuture.completedFuture(ResponseEntity.status(HttpStatus.NOT_FOUND).body(data));
+        } else {
+            data.put("classes", classes);
+            return CompletableFuture.completedFuture(ResponseEntity.ok(data));
+        }
+    }
+
+    @CrossOrigin  // to enable cors
+    @RequestMapping("/login")  //this is the url that for our api
+
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
     }

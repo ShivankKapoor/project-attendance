@@ -13,7 +13,9 @@ public record Records(List<Records> recordsList) {
 
     public record newUser(int utdId, String Name, String netId) {}
 
+
     public record newId(int utdId, String Name) {}
+
 }
 
 
