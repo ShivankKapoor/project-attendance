@@ -22,7 +22,7 @@ public class Main {
 
         fileImport fileImport = new fileImport();
 
-        fileImport.importData();
+        fileImport.importData("test");
 
     }
 }

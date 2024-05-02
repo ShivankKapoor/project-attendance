@@ -12,6 +12,8 @@ import java.util.ArrayList;
 //import java.io.FileReader;
 import java.util.Arrays;
 import java.util.Scanner; // Import the Scanner class to read text files
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class fileImport {
@@ -27,18 +29,31 @@ public class fileImport {
     //sql connection
     String JDBCConnectionString = String.format("jdbc:mysql://csproject.c54ogsos2j17.us-east-2.rds.amazonaws.com:3306/seniorProject?user=%s&password=%s", userId, password);
 
-    public ArrayList<Records.course> importData() {
+    public ArrayList<Records.course> importData(String filePath) {
 
         System.out.println("this is a test");
 
         // read file
-        String filePath = "C:\\Users\\Admin\\Downloads\\Sample-CS1000-Coursebook.txt";
+        filePath = "C:/Users/Admin/Downloads/Sample-CS1000-Coursebook.txt";
+
+//        File file = new File(url.toURI());
+
+        String courseId = null;
+        String professorName = null;
 
         try (Scanner scanner = new Scanner(new File(filePath))) {
             // Skip header lines until the line containing "NetId"
             while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                if (line.contains("NetId")) {
+                String line1 = scanner.nextLine();
+                String line2 = scanner.nextLine();
+                String line3 = scanner.nextLine();
+
+                String[] value = parseLine(line1, line2);
+
+                courseId = value[1];
+                professorName = value[0];
+
+                if (line3.contains("NetId")) {
                     break;
                 }
             }
@@ -47,8 +62,15 @@ public class fileImport {
             PreparedStatement pStmt = conn.prepareStatement("INSERT IGNORE INTO `seniorProject`.`users` " +
                     "(`utdId`, `Name`, `netId`) VALUES (?, ?, ?);");
 
-            PreparedStatement pStmt2 = conn.prepareStatement("INSERT INTO `seniorProject`.`studentClass` " +
+            PreparedStatement pStmt2 = conn.prepareStatement("INSERT IGNORE INTO `seniorProject`.`studentClass` " +
                     "(`courseId`, `utdId`) VALUES (?, ?);");
+
+            PreparedStatement pStmt3 = conn.prepareStatement("INSERT IGNORE INTO `seniorProject`.`class` " +
+                    "(`courseId`, `name`, `professor`) VALUES (?, ?, ?);");
+
+            pStmt3.setString(1, courseId);
+            pStmt3.setString(2, courseId);
+            pStmt3.setString(3, professorName);
 
             // Process the tab-separated data
             while (scanner.hasNextLine()) {
@@ -72,6 +94,7 @@ public class fileImport {
             }
                 int[] returnValues = pStmt.executeBatch();
                 int[] returnValues2 = pStmt2.executeBatch();
+                pStmt3.execute();
                 System.out.println(Arrays.toString(returnValues));
 
         } catch (FileNotFoundException e) {
@@ -85,6 +108,25 @@ public class fileImport {
         ArrayList<Records.course> classValues = null;
 
         return classValues;
+    }
+
+
+    public static String[] parseLine(String line1, String line2) {
+        String[] result = new String[2];
+
+        Pattern instructorPattern = Pattern.compile("Instructors: (.+?) /");
+        Matcher instructorMatcher = instructorPattern.matcher(line2);
+        if (instructorMatcher.find()) {
+            result[0] = instructorMatcher.group(1).trim();
+        }
+
+        Pattern courseIdPattern = Pattern.compile("- Class Roster - (.+?) -");
+        Matcher courseIdMatcher = courseIdPattern.matcher(line1);
+        if (courseIdMatcher.find()) {
+            result[1] = courseIdMatcher.group(1).trim();
+        }
+
+        return result;
     }
 
 }
