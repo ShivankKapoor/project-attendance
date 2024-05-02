@@ -1,3 +1,4 @@
+/*Team 55 CS 4485*/
 package api;
 import record.Records;
 
@@ -14,6 +15,9 @@ public class register {
 
     String JDBCConnectionString = String.format("jdbc:mysql://csproject.c54ogsos2j17.us-east-2.rds.amazonaws.com:3306/seniorProject?user=%s&password=%s", userId, password);
 
+    /*function to add new user to teh register table
+    * This table save the username and the password for the user
+    * This entry is also added into the users tabel to store their name, netId and UTDID*/
     public boolean addNewUser(Records.register register) {
 
         Connection conn = null;
@@ -21,6 +25,7 @@ public class register {
         try {
             conn = DriverManager.getConnection(JDBCConnectionString);
 
+            //statement to insert the username and password into the register table
             PreparedStatement addUserToRegisterTable = conn.prepareStatement("INSERT INTO `seniorProject`.`register` (`utdID`, `password`) VALUES (?, ?)");
             addUserToRegisterTable.setString(1, register.utdId());
             addUserToRegisterTable.setString(2, register.password());
@@ -31,6 +36,7 @@ public class register {
                 return false;
             }
 
+            //gets the user UTDID, netId and the name and inserts into the users table
             PreparedStatement addUsertoUsersTable = conn.prepareStatement("INSERT INTO `seniorProject`.`users` (`utdId`, `Name`, `netId`) VALUES (?, ?, ?);");
             addUsertoUsersTable.setString(1, register.utdId());
             addUsertoUsersTable.setString(2, register.fullName());
@@ -50,6 +56,7 @@ public class register {
         return true;
     }
 
+    //
     public boolean login(Records.login login) {
 
         Connection conn = null;
