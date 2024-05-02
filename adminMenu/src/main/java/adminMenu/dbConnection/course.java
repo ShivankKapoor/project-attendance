@@ -281,16 +281,16 @@ public class course {
         return daysPresentsForEachStudentBetween2Days;
     }
 
-    public ArrayList<String> getStudentsForCourseId(String courseId) {
+    public ArrayList<Records.newId> getStudentsForCourseId(String courseId) {
 
         Connection conn = null;
         boolean isInClass = false;
-        ArrayList<String> namesList = null;
+        ArrayList<Records.newId> namesList = null;
 
         try {
             conn = DriverManager.getConnection(JDBCConnectionString);
 
-            PreparedStatement pstmt = conn.prepareStatement("SELECT users.Name FROM " +
+            PreparedStatement pstmt = conn.prepareStatement("SELECT users.Name, users.utdId FROM " +
                     " seniorProject.studentClass join users using (utdId)" +
                     " where studentClass.courseId = ?;");
 
@@ -304,7 +304,11 @@ public class course {
             while (rs.next()) {
 
                 String name = rs.getString("Name");
-                namesList.add(name);
+                String utdId = rs.getString("utdId");
+
+                Records.newId newId = new Records.newId(utdId, name);
+
+                namesList.add(newId);
             }
 
         } catch (SQLException ex) {
