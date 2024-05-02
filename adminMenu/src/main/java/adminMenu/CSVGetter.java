@@ -1,10 +1,3 @@
-//Written by Shivank Kapoor for Senior Design
-//NetID: SXK190175
-
-/*
- * This file is the runner for the entire program. Is starts the console and other database stuff.
- */
-
 package adminMenu;
 
 import adminMenu.dbConnection.course;
@@ -14,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Objects;
 
 public class CSVGetter extends JFrame {
@@ -21,53 +15,67 @@ public class CSVGetter extends JFrame {
     private JComboBox<String> monthDropdown;
     private JComboBox<String> yearDropdown;
     private JComboBox<String> classDropdown;
+    private Object[] classObjects;
 
     public CSVGetter() {
         setTitle("CSV Getter");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);// Will end program if close button is clicked
+        setDefaultCloseOperation(EXIT_ON_CLOSE); // Will end program if close button is clicked
         setResizable(false);
 
         JPanel panel = new JPanel(new GridBagLayout()); // Layout system
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(10, 10, 10, 10);
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
 
-        // Day Dropdown
+        JLabel dateLabel = new JLabel("Date:"); // Adding labels
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.anchor = GridBagConstraints.EAST;
+        panel.add(dateLabel, constraints);
+
         String[] days = new String[31];
         for (int i = 1; i <= 31; i++) {
             days[i - 1] = String.valueOf(i);
         }
         dayDropdown = new JComboBox<>(days);
-        constraints.gridx = 0;
+        constraints.gridx = 1;
         constraints.gridy = 0;
         panel.add(dayDropdown, constraints);
 
-        // Month Dropdown
         String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
                 "October", "November", "December" };
         monthDropdown = new JComboBox<>(months);
-        constraints.gridx = 1;
+        constraints.gridx = 2;
+        constraints.gridy = 0;
         panel.add(monthDropdown, constraints);
 
-        // Year Dropdown
-        String[] years = new String[981]; // 2020 to 3000
+        String[] years = new String[981];
         for (int i = 2020; i <= 3000; i++) {
             years[i - 2020] = String.valueOf(i);
         }
         yearDropdown = new JComboBox<>(years);
-        constraints.gridx = 2;
+        constraints.gridx = 3;
+        constraints.gridy = 0;
         panel.add(yearDropdown, constraints);
 
-        // Class Dropdown
-        course course = new course(); // create a new object that lets us get all classes
-        Object[] classObjects=course.getAllClasses().toArray(); // get all these classes as objects
+        JLabel classLabel = new JLabel("Class:");
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.anchor = GridBagConstraints.EAST;
+        panel.add(classLabel, constraints);
+
+        course courseObj = new course();
+        classObjects = courseObj.getAllClasses().toArray();
 
         String[] classes = new String[classObjects.length];
         for (int i = 0; i < classObjects.length; i++) {
-            classes[i] = ((Records.course) classObjects[i]).name(); // get all of those objects class names
+            classes[i] = ((Records.course) classObjects[i]).name();
         }
         classDropdown = new JComboBox<>(classes);
         constraints.gridx = 1;
         constraints.gridy = 1;
+        constraints.gridwidth = 3;
         panel.add(classDropdown, constraints);
 
         JButton submitButton = new JButton("Get Attendance"); // Will return the CSV when clicked
@@ -78,24 +86,44 @@ public class CSVGetter extends JFrame {
                 String selectedMonth = String.format("%02d", monthDropdown.getSelectedIndex() + 1);
                 String selectedYear = (String) yearDropdown.getSelectedItem();
                 String selectedDate = selectedYear + "-" + selectedMonth + "-" + selectedDay;
+
                 String selectedClass = (String) classDropdown.getSelectedItem();
-                String courseID="";
+                String courseID = "";
+
                 for (Object classObject : classObjects) {
                     if (Objects.equals(((Records.course) classObject).name(), selectedClass)) {
                         courseID = ((Records.course) classObject).course();
                     }
                 }
-               String data= String.valueOf((course.getStudentsAttendanceBetween2GivenDaysInclusive(courseID,selectedDate,selectedDate)));
-                JOptionPane.showMessageDialog(CSVGetter.this,data);
 
+                List<Records.daysPresent> attendanceData = courseObj.getStudentsAttendanceBetween2GivenDaysInclusive(
+                        courseID, selectedDate, selectedDate);
 
-                //JOptionPane.showMessageDialog(CSVGetter.this,
-                 //       "Selected date: " + selectedDate + "\nSelected class: " + selectedClass+ "\nCouse ID: "+courseID, "Selections",
-                //        JOptionPane.INFORMATION_MESSAGE);
+                String[] columnNames = { "UTD ID", "Days Present", "Name" };
+                Object[][] tableData = new Object[attendanceData.size()][3];
+
+                for (int i = 0; i < attendanceData.size(); i++) {
+                    Records.daysPresent record = attendanceData.get(i);
+                    tableData[i][0] = record.utdId();
+                    tableData[i][1] = record.daysPresent();
+                    tableData[i][2] = record.name();
+                }
+
+                JTable table = new JTable(tableData, columnNames);
+                JScrollPane scrollPane = new JScrollPane(table);
+
+                JOptionPane.showMessageDialog(
+                        CSVGetter.this,
+                        scrollPane,
+                        "Attendance Data",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
             }
         });
+
         constraints.gridx = 1;
         constraints.gridy = 2;
+        constraints.gridwidth = 3;
         constraints.anchor = GridBagConstraints.CENTER;
         panel.add(submitButton, constraints);
 
@@ -109,20 +137,12 @@ public class CSVGetter extends JFrame {
                 dispose();
             }
         });
+
         constraints.gridx = 1;
         constraints.gridy = 3;
+        constraints.gridwidth = 3;
+        constraints.anchor = GridBagConstraints.CENTER;
         panel.add(goBackButton, constraints);
-
-        // Adding labels
-        JLabel dateLabel = new JLabel("Date:");
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.anchor = GridBagConstraints.EAST;
-        panel.add(dateLabel, constraints);
-
-        JLabel classLabel = new JLabel("Class:");
-        constraints.gridy = 1;
-        panel.add(classLabel, constraints);
 
         add(panel);
         pack(); // Adjusting frame size to fit components
