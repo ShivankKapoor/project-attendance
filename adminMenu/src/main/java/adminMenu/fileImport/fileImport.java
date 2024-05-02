@@ -19,11 +19,11 @@ import java.util.regex.Pattern;
 public class fileImport {
 
 
-    Dotenv dotenv = Dotenv.configure().load();
+
 
     //database user ID and password strings
-    String userId = dotenv.get("DB_UserId");
-    String password = dotenv.get("DB_Password");
+    String userId = ("admin");
+    String password = ("Angry1123!");
 
 
     //sql connection
@@ -32,9 +32,6 @@ public class fileImport {
     public ArrayList<Records.course> importData(String filePath) {
 
         System.out.println("this is a test");
-
-        // read file
-        filePath = "C:/Users/Admin/Downloads/Sample-CS1000-Coursebook.txt";
 
 //        File file = new File(url.toURI());
 

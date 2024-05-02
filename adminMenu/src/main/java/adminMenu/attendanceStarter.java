@@ -83,8 +83,7 @@ public class attendanceStarter extends JFrame {
                 Integer minutes = (Integer) minutesDropDown.getSelectedItem();
                 Records.professorCheckin professorCheckin = new Records.professorCheckin(courseID, password, minutes); // Sends
                                                                                                                        // it
-                                                                                                                       // to
-                                                                                                                       // database
+               course.startProfessorCheckIn(professorCheckin);
                 // TODO: Add logic to handle submission
                 JOptionPane.showMessageDialog(attendanceStarter.this,
                         "Course ID: " + courseID + "\nPassword: " + password + "\nMinutes: " + minutes,
