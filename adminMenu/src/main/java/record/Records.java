@@ -12,6 +12,8 @@ public record Records(List<Records> recordsList) {
     public record daysPresent(int utdId, int daysPresent, String name) { }
 
     public record newUser(int utdId, String Name, String netId) {}
+
+    public record newId(String utdId, String Name) {}
 }
 
 
