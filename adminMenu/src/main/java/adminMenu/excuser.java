@@ -96,7 +96,11 @@ public class excuser extends JFrame {
                 }
 
                 ArrayList<Records.newId> newUtdIds = course.getStudentsForCourseId(selectedCourseId);
-                utdIdDropdown.setModel(new DefaultComboBoxModel<>(newUtdIds.toArray(new String[0])));
+                ArrayList<String> displayNames=new ArrayList<String>();
+                for (Records.newId newUtdId : newUtdIds) {
+                    displayNames.add(Integer.toString(newUtdId.utdId()));
+                }
+                utdIdDropdown.setModel(new DefaultComboBoxModel<>(displayNames.toArray(new String[1])));
             }
         });
         courseIdField.addActionListener(classChanger);
@@ -118,6 +122,7 @@ public class excuser extends JFrame {
                         "Excuse Details",
                         JOptionPane.INFORMATION_MESSAGE
                 );
+                course.excuseAbsence(courseId,utdId,selectedDate);
             }
         });
         constraints.gridx = 1;

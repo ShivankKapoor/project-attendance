@@ -304,7 +304,7 @@ public class course {
             while (rs.next()) {
 
                 String name = rs.getString("Name");
-                String utdId = rs.getString("utdId");
+                int utdId = rs.getInt("utdId");
 
                 Records.newId newId = new Records.newId(utdId, name);
 
