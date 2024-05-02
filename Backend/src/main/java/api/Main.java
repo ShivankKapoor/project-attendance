@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import record.Records;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -123,7 +124,7 @@ public class Main {
 
     CompletableFuture<ResponseEntity<Map<String, Object>>> getAllClassesStudent(@RequestBody Records.getAllClassesStudent request) throws SQLException {
         dbConnection connection = new dbConnection();
-        List<Records.ClassInfo> classes = connection.getClassesForStudent(request.getStudentId());
+        List<Records.courseInfo> classes = connection.getAllClassesForStudent(request.utdId());
 
         Map<String, Object> data = new HashMap<>();
         if (classes.isEmpty()) {
@@ -135,8 +136,23 @@ public class Main {
         }
     }
 
-    @CrossOrigin  // to enable cors
-    @RequestMapping("/login")  //this is the url that for our api
+    @CrossOrigin
+    @RequestMapping("/getAllClassesStudent")
+
+    CompletableFuture<ResponseEntity<Map<String, Object>>> getTimings(@RequestBody Records.getCourseId request) throws SQLException {
+        dbConnection connection = new dbConnection();
+        List<Records.timings> classes = connection.getTimings(request.courseId());
+
+        Map<String, Object> data = new HashMap<>();
+        if (classes.isEmpty()) {
+            data.put("Error_Message", "No classes found for this student.");
+            return CompletableFuture.completedFuture(ResponseEntity.status(HttpStatus.NOT_FOUND).body(data));
+        } else {
+            data.put("classes", classes);
+            return CompletableFuture.completedFuture(ResponseEntity.ok(data));
+        }
+    }
+
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);

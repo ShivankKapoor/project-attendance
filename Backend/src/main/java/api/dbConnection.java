@@ -9,11 +9,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
+
 public class dbConnection {
 
     //database user ID and password strings
-    String userId = "admin";
-    String password = "Angry1123!";
+    String userId = "";
+    String password = "";
 
     //sql connection
     String JDBCConnectionString = String.format("jdbc:mysql://csproject.c54ogsos2j17.us-east-2.rds.amazonaws.com:3306/seniorProject?user=%s&password=%s", userId, password);
@@ -294,7 +295,7 @@ public class dbConnection {
         return currentTime.isAfter(sqlTime) && currentTime.isBefore(upperBound);
     }
 
-    public ArrayList<Records.courseInfo> getAllClassesForStudentId(int utdId) {
+    public ArrayList<Records.courseInfo> getAllClassesForStudent(int utdId) {
 
         Connection conn = null;
         boolean isInClass = false;
@@ -321,6 +322,45 @@ public class dbConnection {
                 Records.courseInfo courseInfo = new Records.courseInfo(classId, courseId, name);
 
                 classesValues.add(courseInfo);
+            }
+
+        } catch (SQLException ex) {
+            //to catch any errors
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+
+        return classesValues;
+    }
+
+    public ArrayList<Records.timings> getTimings(String courseId) {
+
+        Connection conn = null;
+        boolean isInClass = false;
+        ArrayList<Records.timings> classesValues = null;
+
+        try {
+            conn = DriverManager.getConnection(JDBCConnectionString);
+
+            PreparedStatement pstmt = conn.prepareStatement("SELECT startDate, startTime, buffer FROM seniorProject.classProfessorCheckIn" +
+                    "where courseId = ? order by idclassProfessorCheckIn desc limit 1;");
+
+            LocalDateTime date = LocalDateTime.now();
+            pstmt.setString(1, courseId);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            classesValues = new ArrayList<>();
+
+            while (rs.next()) {
+                String startDate = rs.getString("startDate");
+                String startTime = rs.getString("startTime");
+                String timeBuffer = rs.getString("buffer");
+
+                Records.timings timings = new Records.timings(startDate, startTime, timeBuffer);
+
+                classesValues.add(timings);
             }
 
         } catch (SQLException ex) {

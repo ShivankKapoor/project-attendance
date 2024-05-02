@@ -9,7 +9,13 @@ public record Records (List<Records> recordsList) {
 
     public record login(String utdId, String password) { }
 
+    public record courseInfo(String classId, String courseId, String className) { }
+
     public record getAllClassesStudent(int utdId) { }
+
+    public record getCourseId(String courseId) { }
+
+    public record timings(String startDate, String startTime, String timeBuffer) { }
 
 }
 
