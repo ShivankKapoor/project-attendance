@@ -72,12 +72,12 @@ public class Importer extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (selectedFile == null) {
-                    JOptionPane.showMessageDialog(null, "Please select a CSV file.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Please select a TXT file.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 fileImport fi = new fileImport();
                 fi.importData(selectedFile.getPath());
-
+                JOptionPane.showMessageDialog(null, "Class Created", "Success", JOptionPane.CLOSED_OPTION);
             }
         });
 
