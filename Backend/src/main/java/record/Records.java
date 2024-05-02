@@ -13,6 +13,10 @@ public record Records (List<Records> recordsList) {
 
     public record getAllClassesStudent(int utdId) { }
 
+    public record getCourseId(String courseId) { }
+
+    public record timings(String startDate, String startTime, String timeBuffer) { }
+
 }
 
 

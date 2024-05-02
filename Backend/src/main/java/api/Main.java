@@ -1,3 +1,4 @@
+/*Team 55 CS4485*/
 package api;
 
 import org.springframework.http.HttpStatus;
@@ -124,6 +125,23 @@ public class Main {
     CompletableFuture<ResponseEntity<Map<String, Object>>> getAllClassesStudent(@RequestBody Records.getAllClassesStudent request) throws SQLException {
         dbConnection connection = new dbConnection();
         List<Records.courseInfo> classes = connection.getAllClassesForStudent(request.utdId());
+
+        Map<String, Object> data = new HashMap<>();
+        if (classes.isEmpty()) {
+            data.put("Error_Message", "No classes found for this student.");
+            return CompletableFuture.completedFuture(ResponseEntity.status(HttpStatus.NOT_FOUND).body(data));
+        } else {
+            data.put("classes", classes);
+            return CompletableFuture.completedFuture(ResponseEntity.ok(data));
+        }
+    }
+
+    @CrossOrigin
+    @RequestMapping("/getAllClassesStudent")
+
+    CompletableFuture<ResponseEntity<Map<String, Object>>> getTimings(@RequestBody Records.getCourseId request) throws SQLException {
+        dbConnection connection = new dbConnection();
+        List<Records.timings> classes = connection.getTimings(request.courseId());
 
         Map<String, Object> data = new HashMap<>();
         if (classes.isEmpty()) {

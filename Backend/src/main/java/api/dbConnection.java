@@ -1,3 +1,6 @@
+/* team 55 CS4485
+This file is used for most of the endpoints that are related to the student check in.
+*/
 package api;
 import record.Records;
 import java.sql.*;
@@ -8,8 +11,6 @@ import java.util.*;
 
 
 public class dbConnection {
-
-
 
     //database user ID and password strings
     String userId = "admin";
@@ -59,7 +60,9 @@ public class dbConnection {
         return rs;
     }
 
-    // function forChecking in student entry
+
+    /* function for Checking in student entry
+    When the student enters the utdID and the password it gets added into the checkIn table * */
     public boolean addCheckInEntrty(Records.Checkin checkIn) {
 
         Connection conn = null;
@@ -107,7 +110,10 @@ public class dbConnection {
         return true;
     }
 
-    //function to check if the user is in the class
+
+    /*function to check if the user is in the class
+    * this is done by checking the table studentClass which has the record of students in the class
+    * The utdId and the course number are compared and if teh student exists, it lets them checkIn*/
     public boolean isUserInClass(String courseId, int utdId) {
 
         Connection conn = null;
@@ -157,6 +163,10 @@ public class dbConnection {
         return isInClass;
     }
 
+
+    /*Function is used to record the total number of days a student has attended class
+    *this is done by checking the checkin table and getting the count of the number of student logins
+    * */
     public int numberAttendance(String courseId, int utdId) {
 
         Connection conn = null;
@@ -189,6 +199,9 @@ public class dbConnection {
 
     }
 
+
+    /*function checks for the validity of the checkin
+    * It checks if the student has the correct password, checkIn within the time window and on the correct day*/
     public boolean checkIfValidValues(String courseId, String password) {
 
         Connection conn = null;
@@ -197,15 +210,17 @@ public class dbConnection {
         try {
             conn = DriverManager.getConnection(JDBCConnectionString);
 
-
+            //getting the local date and formatting it
             LocalDate currentDate = LocalDate.now();
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             String formattedDate = currentDate.format(dateFormatter);
 
+            //getting the local time and formatting it
             LocalTime currentTime = LocalTime.now();
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
             String formattedTime = currentTime.format(timeFormatter);
 
+            //The SQL statement to get the startDate, the startTime the time window and the password
             //SELECT startDate, startTime, passwordOfTheDay FROM seniorProject.classProfessorCheckIn where startDate = '2024-04-27' and courseId = '0' ORDER BY idclassProfessorCheckIn desc LIMIT 1;
             PreparedStatement getStartTiming = conn.prepareStatement("SELECT startDate, startTime, buffer,  passwordOfTheDay " +
                     "FROM seniorProject.classProfessorCheckIn where startDate = ? and courseId = ? " +
@@ -219,6 +234,7 @@ public class dbConnection {
             String bufferTime = null;
             String passwordOfTheDay = null;
 
+            //getting the values for the class start date, start Time, time window and the password
             if (ClassStartTime.next()) {
                 startDate = ClassStartTime.getString("startDate");
                 startTime = ClassStartTime.getString("startTime");
@@ -226,12 +242,17 @@ public class dbConnection {
                 passwordOfTheDay = ClassStartTime.getString("passwordOfTheDay");
             }
 
+            //checking to see if the passwords match
             if (!Objects.equals(passwordOfTheDay, password)) {
                 return false;
             }
+
+            //checking to seeif the start days match
             if (!Objects.equals(startDate, formattedDate)) {
                 return false;
             }
+
+            //checking to see if the checkin is within the time window
             if (!isInTimeWindow(startTime, bufferTime)) {
                 return false;
             }
@@ -248,6 +269,9 @@ public class dbConnection {
 
     }
 
+
+    /*function to check in if the student has checked in within the time window
+    * This is done by passing the start time and the time window*/
     public boolean isInTimeWindow(String baseTime, String bufferTimeString) {
         // Parse SQL time
         LocalTime sqlTime = LocalTime.parse(baseTime);
@@ -300,6 +324,45 @@ public class dbConnection {
                 Records.courseInfo courseInfo = new Records.courseInfo(classId, courseId, name);
 
                 classesValues.add(courseInfo);
+            }
+
+        } catch (SQLException ex) {
+            //to catch any errors
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+
+        return classesValues;
+    }
+
+    public ArrayList<Records.timings> getTimings(String courseId) {
+
+        Connection conn = null;
+        boolean isInClass = false;
+        ArrayList<Records.timings> classesValues = null;
+
+        try {
+            conn = DriverManager.getConnection(JDBCConnectionString);
+
+            PreparedStatement pstmt = conn.prepareStatement("SELECT startDate, startTime, buffer FROM seniorProject.classProfessorCheckIn" +
+                    "where courseId = ? order by idclassProfessorCheckIn desc limit 1;");
+
+            LocalDateTime date = LocalDateTime.now();
+            pstmt.setString(1, courseId);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            classesValues = new ArrayList<>();
+
+            while (rs.next()) {
+                String startDate = rs.getString("startDate");
+                String startTime = rs.getString("startTime");
+                String timeBuffer = rs.getString("buffer");
+
+                Records.timings timings = new Records.timings(startDate, startTime, timeBuffer);
+
+                classesValues.add(timings);
             }
 
         } catch (SQLException ex) {
