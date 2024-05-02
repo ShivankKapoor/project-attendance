@@ -1,6 +1,6 @@
 package adminMenu.dbConnection;
 
-import io.github.cdimascio.dotenv.Dotenv;
+
 import record.Records;
 
 import java.sql.Connection;
@@ -20,11 +20,11 @@ import java.util.ArrayList;
 
 public class course {
 
-    Dotenv dotenv = Dotenv.configure().load();
+
 
     //database user ID and password strings
-    String userId = dotenv.get("DB_UserId");
-    String password = dotenv.get("DB_Password");
+    String userId = ("admin");
+    String password = ("Angry1123!");
 
 
     //sql connection
@@ -304,7 +304,9 @@ public class course {
             while (rs.next()) {
 
                 String name = rs.getString("Name");
-                String utdId = rs.getString("utdId");
+
+                int utdId = rs.getInt("utdId");
+
 
                 Records.newId newId = new Records.newId(utdId, name);
 

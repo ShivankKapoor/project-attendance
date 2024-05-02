@@ -9,6 +9,8 @@ public record Records (List<Records> recordsList) {
 
     public record login(String utdId, String password) { }
 
+    public record getAllClassesStudent(int utdId) { }
+
 }
 
 

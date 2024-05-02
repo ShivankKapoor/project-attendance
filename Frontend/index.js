@@ -106,3 +106,68 @@ document.getElementById("class").addEventListener("input", function (e) {
 		this.oldValue = this.value;
 	}
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+	// Listen for click event on the submit button
+	document
+		.getElementById("submitButton")
+		.addEventListener("click", async function (event) {
+			event.preventDefault(); // Prevent form submission
+
+			// Get values from form fields
+			const utdId = document.getElementById("utdId").value;
+
+			// Check if utdId is not empty
+			if (utdId.trim() !== "") {
+				// Disable the UTD-ID input
+				document.getElementById("utdId").disabled = true;
+
+				// Hide submit button and show additional fields and check-in button
+				document.getElementById("submitButton").style.display = "none";
+				document.getElementById("additionalFields").style.display = "block";
+				document.getElementById("checkInButton").style.display = "block";
+
+				// Fetch classes from the server
+				try {
+					// Check if classes were successfully fetched
+					if (classes && classes.length > 0) {
+						const classSelect = document.getElementById("class");
+						classSelect.innerHTML =
+							'<option value="">Select Class</option>'; // Reset dropdown
+						// Populate dropdown with classes
+						classes.forEach((cls) => {
+							const option = document.createElement("option");
+							option.value = cls.id; // Assuming 'id' is the property for class identifier
+							option.textContent = cls.name; // Assuming 'name' is the property for class name
+							classSelect.appendChild(option);
+						});
+					} else {
+						console.log("No classes found for the given UTD ID.");
+					}
+				} catch (error) {
+					console.error("Error fetching classes:", error);
+				}
+			} else {
+				alert("UTD-ID is required.");
+			}
+		});
+
+	// Handle the check-in process when the "checkInButton" is clicked
+	document
+		.getElementById("checkInButton")
+		.addEventListener("click", function (event) {
+			event.preventDefault(); // Prevent form submission
+
+			// Get values from form fields
+			const utdId = document.getElementById("utdId").value;
+			const passcode = document.getElementById("passcode").value;
+			const selectedClass = document.getElementById("class").value;
+
+			// Check if any field is empty
+			if (!utdId || !passcode || !selectedClass) {
+				alert("Check in failed");
+			} else {
+				alert("Check in successful");
+			}
+		});
+});
