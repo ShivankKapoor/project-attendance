@@ -12,8 +12,8 @@ public class dbConnection {
 
 
     //database user ID and password strings
-//    String userId = dotenv.get("DB_UserId");
-//    String password = dotenv.get("DB_Password");
+    String userId = "admin";
+    String password = "Angry1123!";
 
 
 

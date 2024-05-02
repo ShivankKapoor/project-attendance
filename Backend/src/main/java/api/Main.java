@@ -135,9 +135,6 @@ public class Main {
         }
     }
 
-    @CrossOrigin  // to enable cors
-    @RequestMapping("/login")  //this is the url that for our api
-
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
     }

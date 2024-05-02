@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 var city = "";
+var classes;
 
 // Fetches the user's location based on their IP address using the ip-api service.
 async function getLocation() {
@@ -25,6 +26,63 @@ async function getLocation() {
 	console.log("Will Call page location");
 }
 
+function updateDropdown(classes) {
+	const classSelect = document.getElementById("class");
+	classSelect.innerHTML = ""; // Clear existing entries
+
+	if (Array.isArray(classes)) {
+		classes.forEach((cls) => {
+			const option = document.createElement("option");
+			option.value = cls.classId; // Using classId as the value
+			option.textContent = cls.className; // Using className for display
+			classSelect.appendChild(option);
+		});
+	} else {
+		console.error("Expected an array for classes, received:", classes);
+	}
+}
+
+async function getClasses(utdId) {
+	const url = "http://localhost:8080/getAllClassesStudent";
+
+	const requestBody = JSON.stringify({
+		utdId: utdId,
+	});
+
+	const requestOptions = {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: requestBody,
+	};
+
+	try {
+		const response = await fetch(url, requestOptions);
+		const data = await response.json();
+		console.log("Received data:", data.classes); // Debug: Log the received data
+
+		// Assuming the received data is directly the array as shown
+		if (Array.isArray(data.classes)) {
+			updateDropdown(data.classes);
+		} else {
+			console.error("Data is not an array:", data);
+		}
+	} catch (error) {
+		console.error("Error fetching classes:", error);
+	}
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+	// This function is run after the HTML document has finished loading
+	var submitButton = document.getElementById("submitButton");
+	var utdId = document.getElementById("utdId");
+	// Add a click event listener to the button
+	submitButton.addEventListener("click", function () {
+		getClasses(utdId.value); // Call the getClasses function when the button is clicked
+	});
+});
+
 // Handles the check-in process when the "checkInButton" is clicked. It validates form input fields and displays an alert.
 document
 	.getElementById("checkInButton")
@@ -33,12 +91,11 @@ document
 
 		// Get values from form fields
 		const utdId = document.getElementById("utdId").value;
-		const netId = document.getElementById("netId").value;
-		const name = document.getElementById("name").value;
+		const classId = document.getElementById("class").value;
 		const passcode = document.getElementById("passcode").value;
 
 		// Check if any field is empty
-		if (!utdId || !netId || !name || !passcode) {
+		if (!utdId || !classId || !passcode) {
 			alert("Check in failed");
 		} else {
 			alert("Check in successful");
@@ -77,10 +134,17 @@ function enableCheckInForDateTimeAndDuration(dateTimeString, durationMinutes) {
 	}
 }
 
-// Example usage of enabling the check-in button based on a specific date, time, and duration.
 document.addEventListener("DOMContentLoaded", function () {
-	// Assuming the start DateTime is "2024-04-15 21:00:00" and the margin is 15 minutes
-	enableCheckInForDateTimeAndDuration("2024-04-15 21:00:00", 15);
+	const classDropdown = document.getElementById("class");
+
+	classDropdown.addEventListener("change", function () {
+		// Assuming you have some way to get these values:
+		const dateTimeString = "2024-04-15 21:00:00"; // Example date and time
+		const durationMinutes = 15; // Example duration in minutes
+
+		// Call your function with these parameters
+		enableCheckInForDateTimeAndDuration(dateTimeString, durationMinutes);
+	});
 });
 
 // Sanitizes the input for the "utdId" field to only allow digits and limit the length to 10 digits.
@@ -128,46 +192,46 @@ document.addEventListener("DOMContentLoaded", function () {
 				document.getElementById("checkInButton").style.display = "block";
 
 				// Fetch classes from the server
-				try {
-					// Check if classes were successfully fetched
-					if (classes && classes.length > 0) {
-						const classSelect = document.getElementById("class");
-						classSelect.innerHTML =
-							'<option value="">Select Class</option>'; // Reset dropdown
-						// Populate dropdown with classes
-						classes.forEach((cls) => {
-							const option = document.createElement("option");
-							option.value = cls.id; // Assuming 'id' is the property for class identifier
-							option.textContent = cls.name; // Assuming 'name' is the property for class name
-							classSelect.appendChild(option);
-						});
-					} else {
-						console.log("No classes found for the given UTD ID.");
-					}
-				} catch (error) {
-					console.error("Error fetching classes:", error);
-				}
+				// try {
+				// 	// Check if classes were successfully fetched
+				// 	if (classes && classes.length > 0) {
+				// 		const classSelect = document.getElementById("class");
+				// 		classSelect.innerHTML =
+				// 			'<option value="">Select Class</option>'; // Reset dropdown
+				// 		// Populate dropdown with classes
+				// 		classes.forEach((cls) => {
+				// 			const option = document.createElement("option");
+				// 			option.value = cls.id; // Assuming 'id' is the property for class identifier
+				// 			option.textContent = cls.name; // Assuming 'name' is the property for class name
+				// 			classSelect.appendChild(option);
+				// 		});
+				// 	} else {
+				// 		console.log("No classes found for the given UTD ID.");
+				// 	}
+				// } catch (error) {
+				// 	console.error("Error fetching classes:", error);
+				// }
 			} else {
 				alert("UTD-ID is required.");
 			}
 		});
 
 	// Handle the check-in process when the "checkInButton" is clicked
-	document
-		.getElementById("checkInButton")
-		.addEventListener("click", function (event) {
-			event.preventDefault(); // Prevent form submission
+	// document
+	// 	.getElementById("checkInButton")
+	// 	.addEventListener("click", function (event) {
+	// 		event.preventDefault(); // Prevent form submission
 
-			// Get values from form fields
-			const utdId = document.getElementById("utdId").value;
-			const passcode = document.getElementById("passcode").value;
-			const selectedClass = document.getElementById("class").value;
+	// 		// Get values from form fields
+	// 		const utdId = document.getElementById("utdId").value;
+	// 		const passcode = document.getElementById("passcode").value;
+	// 		const selectedClass = document.getElementById("class").value;
 
-			// Check if any field is empty
-			if (!utdId || !passcode || !selectedClass) {
-				alert("Check in failed");
-			} else {
-				alert("Check in successful");
-			}
-		});
+	// 		// Check if any field is empty
+	// 		if (!utdId || !passcode || !selectedClass) {
+	// 			alert("Check in failed");
+	// 		} else {
+	// 			alert("Check in successful");
+	// 		}
+	// 	});
 });
