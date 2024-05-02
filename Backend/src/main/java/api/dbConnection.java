@@ -273,7 +273,7 @@ public class dbConnection {
         return currentTime.isAfter(sqlTime) && currentTime.isBefore(upperBound);
     }
 
-    public ArrayList<Records.courseInfo> getAllClassesForStudentId(int utdId) {
+    public ArrayList<Records.courseInfo> getAllClassesForStudent(int utdId) {
 
         Connection conn = null;
         boolean isInClass = false;

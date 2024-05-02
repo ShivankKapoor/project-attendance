@@ -5,6 +5,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import record.Records;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -122,7 +123,7 @@ public class Main {
 
     CompletableFuture<ResponseEntity<Map<String, Object>>> getAllClassesStudent(@RequestBody Records.getAllClassesStudent request) throws SQLException {
         dbConnection connection = new dbConnection();
-        List<Records.ClassInfo> classes = connection.getClassesForStudent(request.getStudentId());
+        List<Records.courseInfo> classes = connection.getAllClassesForStudent(request.utdId());
 
         Map<String, Object> data = new HashMap<>();
         if (classes.isEmpty()) {
