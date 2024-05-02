@@ -1,10 +1,3 @@
-//Written by Shivank Kapoor for Senior Design
-//NetID: sxk190175
-/*
- * This file is the main window of the entire program
- *  -Lets them navigate to the different pages
- */
-
 package adminMenu;
 
 import javax.swing.*;
@@ -25,7 +18,7 @@ public class Console extends JFrame {
 
         JPanel panel = new JPanel(new GridBagLayout()); // Layout system
         GridBagConstraints constraints = new GridBagConstraints();
-        constraints.insets = new Insets(10, 20, 20, 20); // Reduced top padding
+        constraints.insets = new Insets(10, 20, 20, 20); // Padding
 
         // Load logo image
         ImageIcon logoIcon = null;
@@ -58,7 +51,7 @@ public class Console extends JFrame {
 
         JButton getCSVButton = new JButton("Get Class List"); // Button to get CSVs that can be uploaded to elearning
         getCSVButton.setPreferredSize(new Dimension(180, 60));
-        getCSVButton.addActionListener(new ActionListener() { // Listener if the Get class list button is clicked
+        getCSVButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Create CSVGetter object
@@ -79,7 +72,7 @@ public class Console extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 excuser x = new excuser(); // Open the excuser window
-                dispose();// Close the main window
+                dispose(); // Close the main window
             }
         });
         constraints.gridx = 2;
@@ -88,7 +81,7 @@ public class Console extends JFrame {
         panel.add(excuseAbsenceButton, constraints);
 
         JButton seeWarningsButton = new JButton("See Warnings"); // Button to see if there were warning for students for
-                                                                 // a class
+        // a class
         seeWarningsButton.setPreferredSize(new Dimension(180, 60)); // Larger button size
         seeWarningsButton.addActionListener(new ActionListener() { // Listener for warnings button
             @Override
@@ -115,6 +108,21 @@ public class Console extends JFrame {
         constraints.gridy = 3;
         constraints.gridwidth = 2;
         panel.add(startAttendanceButton, constraints);
+
+        JButton createCourseButton = new JButton("Create Course"); // Button to create a new course
+        createCourseButton.setPreferredSize(new Dimension(180, 60)); // Large button size
+        createCourseButton.addActionListener(new ActionListener() { // Listener to open the course creation window
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Importer(); // Open a new CreateCourse window
+                dispose(); // Close the console window
+            }
+        });
+        constraints.gridx = 0;
+        constraints.gridy = 4;
+        constraints.gridwidth = 4;
+        constraints.anchor = GridBagConstraints.CENTER;
+        panel.add(createCourseButton, constraints);
 
         add(panel);
         pack(); // Adjusting frame size to fit components
