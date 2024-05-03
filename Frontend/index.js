@@ -77,9 +77,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	// This function is run after the HTML document has finished loading
 	var submitButton = document.getElementById("submitButton");
 	var utdId = document.getElementById("utdId");
-
-	const checkInButton = document.getElementById("checkInButton");
-	checkInButton.classList.add("disabled");
 	// Add a click event listener to the button
 	submitButton.addEventListener("click", function () {
 		getClasses(utdId.value); // Call the getClasses function when the button is clicked
@@ -140,9 +137,9 @@ function enableCheckInForDateTimeAndDuration(dateTimeString, durationMinutes) {
 document.addEventListener("DOMContentLoaded", function () {
 	const classDropdown = document.getElementById("class");
 
-	classDropdown.addEventListener("click", async function () {
+	classDropdown.addEventListener("change", async function (event) {
 		const courseId = this.value; // Assuming the value of the dropdown options are course IDs
-
+		console.log(courseId);
 		// Make a POST request to get timings
 		try {
 			const response = await fetch("http://localhost:8080/getTimings", {

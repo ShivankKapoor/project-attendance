@@ -141,7 +141,7 @@ public class Main {
 
     CompletableFuture<ResponseEntity<Map<String, Object>>> getTimings(@RequestBody Records.getCourseId request) throws SQLException {
         dbConnection connection = new dbConnection();
-        List<Records.timings> classes = connection.getTimings(request.courseId());
+        List<Records.timings> classes = connection.getTimings(request.classId());
 
         Map<String, Object> data = new HashMap<>();
         if (classes.isEmpty()) {
