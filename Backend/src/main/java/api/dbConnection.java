@@ -345,7 +345,7 @@ public class dbConnection {
         try {
             conn = DriverManager.getConnection(JDBCConnectionString);
 
-            PreparedStatement pstmt = conn.prepareStatement("SELECT startDate, startTime, buffer FROM seniorProject.classProfessorCheckIn" +
+            PreparedStatement pstmt = conn.prepareStatement("SELECT startDate, startTime, buffer FROM seniorProject.classProfessorCheckIn " +
                     "where courseId = ? order by idclassProfessorCheckIn desc limit 1;");
 
             LocalDateTime date = LocalDateTime.now();

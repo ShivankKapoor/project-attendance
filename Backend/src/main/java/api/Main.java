@@ -137,7 +137,7 @@ public class Main {
     }
 
     @CrossOrigin
-    @RequestMapping("/getAllClassesStudent")
+    @RequestMapping("/getTimings")
 
     CompletableFuture<ResponseEntity<Map<String, Object>>> getTimings(@RequestBody Records.getCourseId request) throws SQLException {
         dbConnection connection = new dbConnection();
