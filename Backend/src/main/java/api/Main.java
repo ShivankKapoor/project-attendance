@@ -137,11 +137,11 @@ public class Main {
     }
 
     @CrossOrigin
-    @RequestMapping("/getAllClassesStudent")
+    @RequestMapping("/getTimings")
 
     CompletableFuture<ResponseEntity<Map<String, Object>>> getTimings(@RequestBody Records.getCourseId request) throws SQLException {
         dbConnection connection = new dbConnection();
-        List<Records.timings> classes = connection.getTimings(request.courseId());
+        List<Records.timings> classes = connection.getTimings(request.classId());
 
         Map<String, Object> data = new HashMap<>();
         if (classes.isEmpty()) {
@@ -152,7 +152,6 @@ public class Main {
             return CompletableFuture.completedFuture(ResponseEntity.ok(data));
         }
     }
-
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);

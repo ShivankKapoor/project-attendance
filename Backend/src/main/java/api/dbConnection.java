@@ -13,8 +13,10 @@ import java.util.*;
 public class dbConnection {
 
     //database user ID and password strings
-    String userId = "";
-    String password = "";
+    String userId = "admin";
+    String password = "Angry1123!";
+
+
 
     //sql connection
     String JDBCConnectionString = String.format("jdbc:mysql://csproject.c54ogsos2j17.us-east-2.rds.amazonaws.com:3306/seniorProject?user=%s&password=%s", userId, password);
@@ -343,9 +345,10 @@ public class dbConnection {
         try {
             conn = DriverManager.getConnection(JDBCConnectionString);
 
-            PreparedStatement pstmt = conn.prepareStatement("SELECT startDate, startTime, buffer FROM seniorProject.classProfessorCheckIn" +
-                    "where courseId = ? order by idclassProfessorCheckIn desc limit 1;");
-
+            PreparedStatement pstmt = conn.prepareStatement("SELECT startDate, startTime, buffer\n" +
+                    "FROM seniorProject.classProfessorCheckIn  LEFT JOIN  seniorProject.class\n" +
+                    "ON seniorProject.classProfessorCheckIn.courseId=seniorProject.class.courseId\n" +
+                    "Where classId=?;");
             LocalDateTime date = LocalDateTime.now();
             pstmt.setString(1, courseId);
 
