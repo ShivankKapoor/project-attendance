@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // Handles the check-in process when the "checkInButton" is clicked. It validates form input fields and displays an alert.
 document
 	.getElementById("checkInButton")
-	.addEventListener("click", function (event) {
+	.addEventListener("click", async function (event) {
 		event.preventDefault(); // Prevent form submission
 
 		// Get values from form fields
@@ -96,9 +96,42 @@ document
 
 		// Check if any field is empty
 		if (!utdId || !classId || !passcode) {
-			alert("Check in failed");
-		} else {
-			alert("Check in successful");
+			alert("Check in failed: All fields must be filled.");
+			return; // Exit the function if any field is empty
+		}
+
+		// Data to be sent to the server
+		const requestData = {
+			courseId: classId,
+			utdId: utdId,
+			password: passcode,
+		};
+
+		try {
+			// Make a PUT request to the server
+			const response = await fetch("http://localhost:8080/checkIn", {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(requestData),
+			});
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+
+			const result = await response.json(); // Assuming the server responds with JSON
+
+			// Use the server's response to determine the alert
+			if (result.isCheckIn) {
+				alert("Check-in successful");
+			} else {
+				alert("Check-in failed: Please try again.");
+			}
+		} catch (error) {
+			console.error("Failed to process check-in:", error);
+			alert("Check-in failed: Unable to connect to the server.");
 		}
 	});
 
