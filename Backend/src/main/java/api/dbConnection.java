@@ -69,12 +69,24 @@ public class dbConnection {
         boolean isInClass = false;
         int numOfAttendance = 0;
         String timing = "";
+        String courseId="";
         try {
             conn = DriverManager.getConnection(JDBCConnectionString);
 
+            PreparedStatement pstmtCourseId = conn.prepareStatement("Select courseId from `seniorProject`.`class` where classId = ?;");
+            pstmtCourseId.setString(1, checkIn.classId());
+
+            ResultSet theCourseId = pstmtCourseId.executeQuery();
+
+            if (theCourseId.next()) {
+                courseId = theCourseId.getString(1);
+            }
+
+            System.out.println("courseid" +courseId);
+
             //count holds the return value if the function isUserInClass which returns whether the student exists in the class or not
-            isInClass = isUserInClass(checkIn.courseId(), checkIn.utdId());
-            boolean isValid =  checkIfValidValues(checkIn.courseId(), checkIn.password());
+            isInClass = isUserInClass(courseId, checkIn.utdId());
+            boolean isValid =  checkIfValidValues(courseId, checkIn.password());
 
             //if return value is false, then the student is not in class and the student checkin is not recorded
             if (!isInClass) {
@@ -87,13 +99,13 @@ public class dbConnection {
                 return false;
             }
 
-            numOfAttendance = numberAttendance(checkIn.courseId(), checkIn.utdId());
+            numOfAttendance = numberAttendance(courseId, checkIn.utdId());
 
             //preparing statement to execute to enter the values of the student for the course and date
             //INSERT INTO `seniorProject`.`checkIn` (`courseId`, `utdId`, `netId`, `time`) VALUES ('0', '123', 'test', '2');
             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO `seniorProject`.`checkIn` (`courseId`, `utdId`, `time`) VALUES (?, ?, ?);");
             LocalDateTime date = LocalDateTime.now();
-            pstmt.setString(1, checkIn.courseId());
+            pstmt.setString(1, courseId);
             pstmt.setInt(2, checkIn.utdId());
             pstmt.setString(3, String.valueOf(date));
 

@@ -3,7 +3,7 @@ package record;
 import java.util.List;
 
 public record Records (List<Records> recordsList) {
-    public record Checkin(String courseId, int utdId, String password) { }
+    public record Checkin(String classId, int utdId, String password) { }
 
     public record register(String fullName, String netId, String utdId, String password) { }
 
@@ -13,7 +13,7 @@ public record Records (List<Records> recordsList) {
 
     public record getAllClassesStudent(int utdId) { }
 
-    public record getCourseId(String courseId) { }
+    public record getCourseId(String classId) { }
 
     public record timings(String startDate, String startTime, String timeBuffer) { }
 
