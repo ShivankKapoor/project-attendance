@@ -137,7 +137,7 @@ function enableCheckInForDateTimeAndDuration(dateTimeString, durationMinutes) {
 document.addEventListener("DOMContentLoaded", function () {
 	const classDropdown = document.getElementById("class");
 
-	classDropdown.addEventListener("change", async function (event) {
+	classDropdown.addEventListener("change", async function () {
 		const courseId = this.value; // Assuming the value of the dropdown options are course IDs
 		console.log(courseId);
 		// Make a POST request to get timings
@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ courseId: courseId }),
+				body: JSON.stringify({ classId: courseId }),
 			});
 
 			if (!response.ok) {
