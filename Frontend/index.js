@@ -102,15 +102,17 @@ document
 
 		// Data to be sent to the server
 		const requestData = {
-			courseId: classId,
+			classId: classId,
 			utdId: utdId,
 			password: passcode,
 		};
 
+		console.log(requestData);
+
 		try {
 			// Make a PUT request to the server
 			const response = await fetch("http://localhost:8080/checkIn", {
-				method: "PUT",
+				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
