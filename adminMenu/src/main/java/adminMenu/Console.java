@@ -49,7 +49,7 @@ public class Console extends JFrame {
         constraints.anchor = GridBagConstraints.CENTER;
         panel.add(titleLabel, constraints);
 
-        JButton getCSVButton = new JButton("Get Class List"); // Button to get CSVs that can be uploaded to elearning
+        JButton getCSVButton = new JButton("Get Class List"); // Button to get lists of attendance
         getCSVButton.setPreferredSize(new Dimension(180, 60));
         getCSVButton.addActionListener(new ActionListener() {
             @Override

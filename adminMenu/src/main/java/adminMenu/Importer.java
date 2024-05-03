@@ -70,13 +70,13 @@ public class Importer extends JFrame {
 
         submitButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) { // will run on sumbit
                 if (selectedFile == null) {
                     JOptionPane.showMessageDialog(null, "Please select a TXT file.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 fileImport fi = new fileImport();
-                fi.importData(selectedFile.getPath());
+                fi.importData(selectedFile.getPath()); // sends path to backend file handler
                 JOptionPane.showMessageDialog(null, "Class Created", "Success", JOptionPane.CLOSED_OPTION);
             }
         });
