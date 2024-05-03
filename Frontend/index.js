@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	const classDropdown = document.getElementById("class");
 
 	classDropdown.addEventListener("change", async function () {
-		const courseId = this.value; // Assuming the value of the dropdown options are course IDs
+		const courseId = this.value;
 		console.log(courseId);
 		// Make a POST request to get timings
 		try {
@@ -262,27 +262,6 @@ document.addEventListener("DOMContentLoaded", function () {
 				document.getElementById("submitButton").style.display = "none";
 				document.getElementById("additionalFields").style.display = "block";
 				document.getElementById("checkInButton").style.display = "block";
-
-				// Fetch classes from the server
-				// try {
-				// 	// Check if classes were successfully fetched
-				// 	if (classes && classes.length > 0) {
-				// 		const classSelect = document.getElementById("class");
-				// 		classSelect.innerHTML =
-				// 			'<option value="">Select Class</option>'; // Reset dropdown
-				// 		// Populate dropdown with classes
-				// 		classes.forEach((cls) => {
-				// 			const option = document.createElement("option");
-				// 			option.value = cls.id; // Assuming 'id' is the property for class identifier
-				// 			option.textContent = cls.name; // Assuming 'name' is the property for class name
-				// 			classSelect.appendChild(option);
-				// 		});
-				// 	} else {
-				// 		console.log("No classes found for the given UTD ID.");
-				// 	}
-				// } catch (error) {
-				// 	console.error("Error fetching classes:", error);
-				// }
 			} else {
 				alert("UTD-ID is required.");
 			}
