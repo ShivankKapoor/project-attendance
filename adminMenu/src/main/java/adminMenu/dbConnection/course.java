@@ -30,6 +30,8 @@ public class course {
     //sql connection
     String JDBCConnectionString = String.format("jdbc:mysql://csproject.c54ogsos2j17.us-east-2.rds.amazonaws.com:3306/seniorProject?user=%s&password=%s", userId, password);
 
+
+    //gets all classes that the system has
     public ArrayList<Records.course> getAllClasses() {
 
         Connection conn = null;
@@ -66,7 +68,7 @@ public class course {
         return classValues;
     }
 
-    //TODO Hiran finish this up and check this please
+    //to get all classes a student is registered in
     public ArrayList<Records.courseInfo> getAllClassesForStudentId(int utdId) {
 
         Connection conn = null;
@@ -145,7 +147,7 @@ public class course {
         }
     }
 
-    //For Warnings
+    //For Warnings on which students have been skipping class
     public ArrayList<Integer> getStudentsWhoMissed3ClassesConsequtivly(String courseId) {
 
         Connection conn = null;
@@ -236,7 +238,7 @@ public class course {
 
 
 
-    //To get CSV
+    //To get attendance list
     public ArrayList<Records.daysPresent> getStudentsAttendanceBetween2GivenDaysInclusive(String courseId, String day1, String day2) {
 
         Connection conn = null;
@@ -281,6 +283,7 @@ public class course {
         return daysPresentsForEachStudentBetween2Days;
     }
 
+    //will return all the students for a class
     public ArrayList<Records.newId> getStudentsForCourseId(String courseId) {
 
         Connection conn = null;
@@ -323,7 +326,7 @@ public class course {
         return namesList;
     }
 
-    // Create excuse absence api
+    // Create excuse absence. This basically checks them in as if there were actually there
     public ArrayList<Records.daysPresent> excuseAbsence(String courseId, String utdId, String Date) {
 
         Connection conn = null;

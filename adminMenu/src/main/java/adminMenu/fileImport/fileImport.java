@@ -29,11 +29,11 @@ public class fileImport {
     //sql connection
     String JDBCConnectionString = String.format("jdbc:mysql://csproject.c54ogsos2j17.us-east-2.rds.amazonaws.com:3306/seniorProject?user=%s&password=%s", userId, password);
 
+
+    //lets us upload a txt file containing the class information and its students, so they can start using the system.
     public ArrayList<Records.course> importData(String filePath) {
 
-        System.out.println("this is a test");
 
-//        File file = new File(url.toURI());
 
         String courseId = null;
         String professorName = null;
