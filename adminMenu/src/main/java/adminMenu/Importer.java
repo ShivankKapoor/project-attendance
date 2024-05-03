@@ -1,5 +1,7 @@
 package adminMenu;
 
+import adminMenu.fileImport.fileImport;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
@@ -25,18 +27,6 @@ public class Importer extends JFrame {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Course name input field
-        JLabel courseNameLabel = new JLabel("Course Name:");
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panel.add(courseNameLabel, gbc);
-
-        courseNameField = new JTextField();
-        courseNameField.setPreferredSize(new Dimension(200, 25));
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0; // Allow expansion for courseNameField
-        panel.add(courseNameField, gbc);
 
         // File chooser button
         JButton selectFileButton = new JButton("Select File");
@@ -80,20 +70,14 @@ public class Importer extends JFrame {
 
         submitButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                String courseName = courseNameField.getText();
-                if (courseName.trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Please enter a course name.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
+            public void actionPerformed(ActionEvent e) { // will run on sumbit
                 if (selectedFile == null) {
-                    JOptionPane.showMessageDialog(null, "Please select a CSV file.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Please select a TXT file.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-
-                System.out.println("Course Name: " + courseName);
-                System.out.println("Selected File: " + selectedFile.getPath());
+                fileImport fi = new fileImport();
+                fi.importData(selectedFile.getPath()); // sends path to backend file handler
+                JOptionPane.showMessageDialog(null, "Class Created", "Success", JOptionPane.CLOSED_OPTION);
             }
         });
 

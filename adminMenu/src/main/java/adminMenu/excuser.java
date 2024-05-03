@@ -95,10 +95,10 @@ public class excuser extends JFrame {
                     }
                 }
 
-                ArrayList<Records.newId> newUtdIds = course.getStudentsForCourseId(selectedCourseId);
+                ArrayList<Records.newId> newUtdIds = course.getStudentsForCourseId(selectedCourseId);// gets all utd ids for a selected course
                 ArrayList<String> displayNames=new ArrayList<String>();
                 for (Records.newId newUtdId : newUtdIds) {
-                    displayNames.add(Integer.toString(newUtdId.utdId()));
+                    displayNames.add(Integer.toString(newUtdId.utdId())); // puts them as strings in the dropdown
                 }
                 utdIdDropdown.setModel(new DefaultComboBoxModel<>(displayNames.toArray(new String[1])));
             }
@@ -108,11 +108,13 @@ public class excuser extends JFrame {
         JButton submitButton = new JButton("Excuse Absence"); // Button to submit the excusal
         submitButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) { // Will execute on submit
+                // Format the date
                 String selectedDay = (String) dayDropdown.getSelectedItem();
                 String selectedMonth = (String) monthDropdown.getSelectedItem();
                 String selectedYear = (String) yearDropdown.getSelectedItem();
-                String selectedDate = selectedYear + "-" + (monthDropdown.getSelectedIndex() + 1) + "-" + selectedDay; // Format the date
+                String selectedDate = selectedYear + "-" + (monthDropdown.getSelectedIndex() + 1) + "-" + selectedDay;
+
                 String utdId = (String) utdIdDropdown.getSelectedItem();
                 String courseId = (String) courseIdField.getSelectedItem();
 
@@ -122,7 +124,7 @@ public class excuser extends JFrame {
                         "Excuse Details",
                         JOptionPane.INFORMATION_MESSAGE
                 );
-                course.excuseAbsence(courseId,utdId,selectedDate);
+                course.excuseAbsence(courseId,utdId,selectedDate); //Send request to database
             }
         });
         constraints.gridx = 1;

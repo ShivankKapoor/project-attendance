@@ -68,7 +68,7 @@ public class attendanceStarter extends JFrame {
         for (int i = 0; i < 15; i++) {
             minutes[i] = (i + 1) * 5;
         }
-        JComboBox<Integer> minutesDropDown = new JComboBox<>(minutes);
+        JComboBox<Integer> minutesDropDown = new JComboBox<>(minutes); // drop down for all the mins
         constraints.gridx = 1;
         constraints.gridy = 2;
         panel.add(minutesDropDown, constraints);
@@ -83,8 +83,7 @@ public class attendanceStarter extends JFrame {
                 Integer minutes = (Integer) minutesDropDown.getSelectedItem();
                 Records.professorCheckin professorCheckin = new Records.professorCheckin(courseID, password, minutes); // Sends
                                                                                                                        // it
-                                                                                                                       // to
-                                                                                                                       // database
+               course.startProfessorCheckIn(professorCheckin);
                 // TODO: Add logic to handle submission
                 JOptionPane.showMessageDialog(attendanceStarter.this,
                         "Course ID: " + courseID + "\nPassword: " + password + "\nMinutes: " + minutes,
@@ -100,7 +99,7 @@ public class attendanceStarter extends JFrame {
         JButton goBackButton = new JButton("Go Back");
         goBackButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) { //for when user wants to cancel starting attendance
                 new Console();
                 dispose();
             }
