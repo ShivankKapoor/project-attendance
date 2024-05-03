@@ -55,7 +55,7 @@ public class Console extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Create CSVGetter object
-                CSVGetter x = new CSVGetter();
+                AttendanceGetter x = new AttendanceGetter();
                 // Close the console window
                 dispose();
             }
